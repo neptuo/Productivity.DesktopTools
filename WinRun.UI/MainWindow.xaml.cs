@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -35,6 +36,10 @@ namespace WinRun.UI
             {
                 WindowInteropHelper interop = new WindowInteropHelper(this);
                 SendMessage(interop.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
+            });
+            helper.Register(Key.F4, ModifierKeys.Windows, delegate
+            {
+                Process.Start(@"C:\Windows\explorer.exe", "::{7007ACC7-3202-11D1-AAD2-00805FC1270E}");
             });
         }
 
