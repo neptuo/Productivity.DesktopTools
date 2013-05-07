@@ -39,9 +39,22 @@ namespace WinRun.UI
             });
             helper.Register(Key.F4, ModifierKeys.Windows, delegate
             {
+                System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Suspend, true, true);
+            });
+            helper.Register(Key.F5, ModifierKeys.Windows, delegate
+            {
                 Process.Start(@"C:\Windows\explorer.exe", "::{7007ACC7-3202-11D1-AAD2-00805FC1270E}");
             });
+            helper.Register(Key.L, ModifierKeys.Windows | ModifierKeys.Shift, delegate
+            {
+                LockWorkStation();
+                WindowInteropHelper interop = new WindowInteropHelper(this);
+                SendMessage(interop.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
+            });
         }
+
+        [DllImport("user32.dll")]
+        public static extern void LockWorkStation();
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
