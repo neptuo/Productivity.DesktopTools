@@ -41,6 +41,10 @@ namespace WinRun.UI
             {
                 System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Suspend, true, true);
             });
+            helper.Register(Key.F12, ModifierKeys.Windows, delegate
+            {
+                System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Hibernate, true, true);
+            });
             helper.Register(Key.F5, ModifierKeys.Windows, delegate
             {
                 Process.Start(@"C:\Windows\explorer.exe", "::{7007ACC7-3202-11D1-AAD2-00805FC1270E}");
