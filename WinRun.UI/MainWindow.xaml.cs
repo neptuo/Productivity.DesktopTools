@@ -22,6 +22,8 @@ namespace WinRun.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ClockWindow clockWindow = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -48,6 +50,16 @@ namespace WinRun.UI
             helper.Register(Key.F5, ModifierKeys.Windows, delegate
             {
                 Process.Start(@"C:\Windows\explorer.exe", "::{7007ACC7-3202-11D1-AAD2-00805FC1270E}");
+            });
+            helper.Register(Key.F6, ModifierKeys.Windows, delegate
+            {
+                if (clockWindow == null)
+                {
+                    clockWindow = new ClockWindow();
+                    clockWindow.Closed += (sender, args) => { clockWindow = null; };
+                }
+                clockWindow.Show();
+                clockWindow.Activate();
             });
             helper.Register(Key.L, ModifierKeys.Windows | ModifierKeys.Shift, delegate
             {
