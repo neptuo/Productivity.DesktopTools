@@ -74,8 +74,8 @@ namespace WinRun.UI
 
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            Hide();
-            UpdateSettings();
+            //Hide();
+            //UpdateSettings();
         }
 
         private void UpdateSettings()
