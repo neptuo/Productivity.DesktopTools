@@ -17,13 +17,18 @@ using WinRun.UI.Properties;
 
 namespace WinRun.UI
 {
+    public enum ClockSize
+    {
+        Large, Medium
+    }
+
     /// <summary>
     /// Interaction logic for ClockWindow.xaml
     /// </summary>
     public partial class ClockWindow : Window
     {
         private DispatcherTimer timer;
-
+        
         public ClockWindow()
         {
             InitializeComponent();
@@ -49,6 +54,23 @@ namespace WinRun.UI
         public void UpdateDateTime()
         {
             lblClock.Content = DateTime.Now.ToString("HH:mm:ss");
+        }
+
+        public void SetClockSize(ClockSize clockSize)
+        {
+            switch (clockSize)
+            {
+                case ClockSize.Large:
+                    lblClock.FontSize = 80;
+                    lblClock.Padding = new Thickness(30, 10, 30, 20);
+                    break;
+                case ClockSize.Medium:
+                    lblClock.FontSize = 30;
+                    lblClock.Padding = new Thickness(10, 10, 10, 12);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

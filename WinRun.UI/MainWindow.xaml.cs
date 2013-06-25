@@ -58,6 +58,7 @@ namespace WinRun.UI
                     clockWindow = new ClockWindow();
                     clockWindow.Closed += (sender, args) => { clockWindow = null; };
                 }
+                clockWindow.SetClockSize(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.Right) ? ClockSize.Medium : ClockSize.Large);
                 clockWindow.Show();
                 clockWindow.Activate();
             });
