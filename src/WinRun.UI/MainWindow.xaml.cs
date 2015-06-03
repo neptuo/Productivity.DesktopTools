@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Neptuo.Windows.Threading;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WinRun.UI.Stickers;
 
 namespace WinRun.UI
 {
@@ -24,9 +27,16 @@ namespace WinRun.UI
     {
         private ClockWindow clockWindow = null;
 
+        private readonly Timer timer = new Timer(2000);
+        private readonly HashSet<IntPtr> windows = new HashSet<IntPtr>();
+        private readonly List<WindowBoundsHook> hooks = new List<WindowBoundsHook>();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            timer.Elapsed += timer_Elapsed;
+            timer.Start();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -86,6 +96,37 @@ namespace WinRun.UI
         private void Window_Activated_1(object sender, EventArgs e)
         {
             Hide();
+        }
+
+
+
+        public const int StickOffset = 20;
+
+        private void timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            IntPtr current = Stickers.Win32.GetForegroundWindow();
+            if (current != null && !windows.Contains(current))
+            {
+                windows.Add(current);
+                DispatcherHelper.Run(Dispatcher, () => hooks.Add(new WindowBoundsHook(current, Log).Install()));
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            foreach (var hook in hooks)
+                hook.Uninstall();
+        }
+
+        private void Log(string messageFormat, params object[] parameters)
+        {
+            //DispatcherHelper.Run(
+            //    Dispatcher,
+            //    () => tbxLog.Text = String.Format(messageFormat, parameters) + Environment.NewLine + tbxLog.Text
+            //);
+            Console.WriteLine(messageFormat, parameters);
         }
     }
 }
