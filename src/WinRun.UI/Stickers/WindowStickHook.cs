@@ -67,43 +67,19 @@ namespace WinRun.UI.Stickers
                 if (Win32.GetWindowRect(hwnd, out info))
                 {
                     Log("User state: {0}x{1} at {2}x{3}.", info.Top, info.Left, info.Bottom, info.Right);
-
-                    int left = info.Left;
-                    int top = info.Top;
+                    
+                    StickContext leftContext = new StickContext(info.Left);
+                    StickContext topContext = new StickContext(info.Top);
                     int width = info.Right - info.Left;
                     int height = info.Bottom - info.Top;
 
-                    int newLeft = left;
-                    int newTop = top;
-
-                    //if (info.Top < 10)
-                    //    info.Top = 0;
-                    //else if (info.Bottom > screenHeight - 10)
-                    //    info.Top = screenHeight - height;
-
-                    //if (info.Right > screenWidth - 10)
-                    //    info.Left = screenWidth - width;
-
-                    int all = WindowList.GetAllWindows().Select(w => w.Handle).Count();
-                    int diff = WindowList.GetAllWindows().Select(w => w.Handle).Where(h => h != hwnd).Count() - all;
-
-                    bool leftModified = false;
-                    bool topModified = false;
 
                     foreach (StickInfo other in pointProvider.ForLeft())
                     {
                         if (other.Handle == hwnd)
                             continue;
 
-                        if (other.Value - StickService.StickOffset < left && left < other.Value + StickService.StickOffset)
-                        {
-                            if (!leftModified || Math.Abs(newLeft - left) > Math.Abs(other.Value - left))
-                            {
-                                newLeft = Math.Max(other.Value, 0);
-                                leftModified = true;
-                                Log("Posible stick left '{0}' ({1}).", other.Handle, other.Value);
-                            }
-                        }
+                        leftContext.TryStickTo(other.Value);
                     }
 
                     foreach (StickInfo other in pointProvider.ForRight())
@@ -111,15 +87,7 @@ namespace WinRun.UI.Stickers
                         if (other.Handle == hwnd)
                             continue;
 
-                        if (other.Value - StickService.StickOffset < left + width && left + width < other.Value + StickService.StickOffset)
-                        {
-                            if (!leftModified || Math.Abs(newLeft - left) > Math.Abs(other.Value - (left + width)))
-                            {
-                                newLeft = Math.Max(other.Value - width, 0);
-                                leftModified = true;
-                                Log("Posible stick right '{0}' ({1}).", other.Handle, other.Value);
-                            }
-                        }
+                        leftContext.TryStickTo(other.Value, width);
                     }
 
                     foreach (StickInfo other in pointProvider.ForTop())
@@ -127,15 +95,7 @@ namespace WinRun.UI.Stickers
                         if (other.Handle == hwnd)
                             continue;
 
-                        if (other.Value - StickService.StickOffset < top && top < other.Value + StickService.StickOffset)
-                        {
-                            if (!topModified || Math.Abs(newTop - top) > Math.Abs(other.Value - top))
-                            {
-                                newTop = Math.Max(other.Value, 0);
-                                topModified = true;
-                                Log("Posible stick top '{0}' ({1}).", other.Handle, other.Value);
-                            }
-                        }
+                        topContext.TryStickTo(other.Value);
                     }
 
                     foreach (StickInfo other in pointProvider.ForBottom())
@@ -143,19 +103,11 @@ namespace WinRun.UI.Stickers
                         if (other.Handle == hwnd)
                             continue;
 
-                        if (other.Value - StickService.StickOffset < top + height && top + height < other.Value + StickService.StickOffset)
-                        {
-                            if (!topModified || Math.Abs(newTop - top) > Math.Abs(other.Value - (top + height))) 
-                            {
-                                newTop = Math.Max(other.Value - height, 0);
-                                topModified = true;
-                                Log("Posible stick bottom '{0}' ({1}).", other.Handle, other.Value);
-                            }
-                        }
+                        topContext.TryStickTo(other.Value, height);
                     }
 
-                    Log("Final state: {0}x{1} at {2}x{3}.", newTop, newLeft, height, width);
-                    Win32.SetWindowPos(hwnd, IntPtr.Zero, newLeft, newTop, width, height, 0);
+                    Log("Final state: {0}x{1} at {2}x{3}.", leftContext.NewPosition, topContext.NewPosition, height, width);
+                    Win32.SetWindowPos(hwnd, IntPtr.Zero, leftContext.NewPosition, topContext.NewPosition, width, height, 0);
                 }
                 else
                 {
