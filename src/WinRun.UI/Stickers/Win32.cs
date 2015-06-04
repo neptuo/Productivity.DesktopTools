@@ -30,6 +30,9 @@ namespace WinRun.UI.Stickers
         [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
         public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
+        [DllImport("user32.dll")]
+        public static extern bool UnhookWinEvent(IntPtr hook);
+
         // Callback function
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
@@ -125,6 +128,42 @@ namespace WinRun.UI.Stickers
 
             ASYNCWINDOWPOS = 0x4000;
 
+        }
+
+
+        private delegate bool EnumWindowProc(IntPtr hWnd, IntPtr parameter);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumWindows(EnumWindowProc callback, IntPtr i);
+
+        public static List<IntPtr> GetTopLevelWindows()
+        {
+            List<IntPtr> result = new List<IntPtr>();
+            GCHandle listHandle = GCHandle.Alloc(result);
+            try
+            {
+                EnumWindowProc childProc = new EnumWindowProc(EnumWindow);
+                EnumWindows(childProc, GCHandle.ToIntPtr(listHandle));
+            }
+            finally
+            {
+                if (listHandle.IsAllocated)
+                    listHandle.Free();
+            }
+            return result;
+        }
+
+        private static bool EnumWindow(IntPtr handle, IntPtr pointer)
+        {
+            GCHandle gch = GCHandle.FromIntPtr(pointer);
+            List<IntPtr> list = gch.Target as List<IntPtr>;
+            if (list == null)
+            {
+                throw new InvalidCastException("GCHandle Target could not be cast as List<IntPtr>");
+            }
+            list.Add(handle);
+            return true;
         }
     }
 }

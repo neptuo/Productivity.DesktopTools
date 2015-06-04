@@ -9,40 +9,50 @@ using System.Windows.Threading;
 
 namespace WinRun.UI.Stickers
 {
-    public class StickService
+    public class StickService : IBackgroundService
     {
         private readonly Dispatcher dispatcher;
         private readonly Timer timer = new Timer(2000);
         private readonly HashSet<IntPtr> windows = new HashSet<IntPtr>();
-        private readonly List<WindowBoundsHook> hooks = new List<WindowBoundsHook>();
+        private readonly List<WindowStickHook> hooks = new List<WindowStickHook>();
+        private readonly IStickPointProvider pointProvider;
 
         public StickService(Dispatcher dispatcher)
         {
             this.dispatcher = dispatcher;
-            timer.Elapsed += timer_Elapsed;
+            timer.Elapsed += OnTimer;
+
+            pointProvider = new StickPointProviderCollection()
+                .AddProvider(new DesktopStickPointProvider())
+                .AddProvider(new VisibleWindowStickPointProvider());
         }
 
         public const int StickOffset = 20;
-
-        private void timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            IntPtr current = Stickers.Win32.GetForegroundWindow();
-            if (current != null && !windows.Contains(current))
-            {
-                windows.Add(current);
-                DispatcherHelper.Run(dispatcher, () => hooks.Add(new WindowBoundsHook(current, Console.WriteLine).Install()));
-            }
-        }
 
         public void Install()
         {
             timer.Start();
         }
 
+        private void OnTimer(object sender, ElapsedEventArgs e)
+        {
+            IntPtr current = Win32.GetForegroundWindow();
+            if (current != null && !windows.Contains(current))
+            {
+                windows.Add(current);
+                DispatcherHelper.Run(dispatcher, () =>
+                {
+                    WindowStickHook hook = new WindowStickHook(current, pointProvider);
+                    hook.Install();
+                    hooks.Add(hook);
+                });
+            }
+        }
+
         public void UnInstall()
         {
             foreach (var hook in hooks)
-                hook.Uninstall();
+                hook.UnInstall();
         }
     }
 }
