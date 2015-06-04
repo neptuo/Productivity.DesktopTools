@@ -95,7 +95,7 @@ namespace WinRun.UI.Stickers
                         if (other.Handle == hwnd)
                             continue;
 
-                        if (other.Value - MainWindow.StickOffset < left && left < other.Value + MainWindow.StickOffset)
+                        if (other.Value - StickService.StickOffset < left && left < other.Value + StickService.StickOffset)
                         {
                             if (!leftModified || Math.Abs(newLeft - left) > Math.Abs(other.Value - left))
                             {
@@ -111,7 +111,7 @@ namespace WinRun.UI.Stickers
                         if (other.Handle == hwnd)
                             continue;
 
-                        if (other.Value - MainWindow.StickOffset < top && top < other.Value + MainWindow.StickOffset)
+                        if (other.Value - StickService.StickOffset < top && top < other.Value + StickService.StickOffset)
                         {
                             if (!topModified || Math.Abs(newTop - top) > Math.Abs(other.Value - top))
                             {
@@ -122,31 +122,31 @@ namespace WinRun.UI.Stickers
                         }
                     }
 
-                    foreach (WindowInfo other in GetStickHolders())
-                    {
-                        if (other.Handle == hwnd)
-                            continue;
+                    //foreach (WindowInfo other in GetStickHolders())
+                    //{
+                    //    if (other.Handle == hwnd)
+                    //        continue;
 
-                        //if (other.Left - MainWindow.StickOffset < left && left < other.Left + MainWindow.StickOffset)
-                        //{
-                        //    if (!leftModified || Math.Abs(newLeft - left) > Math.Abs(other.Left - left))
-                        //    {
-                        //        newLeft = Math.Max(other.Left, 0);
-                        //        leftModified = true;
-                        //        Log("Posible stick left '{0}' ({1}x{2}->{3}x{4}).", other.Handle, other.Left, other.Top, other.Width, other.Height);
-                        //    }
-                        //}
+                    //    //if (other.Left - MainWindow.StickOffset < left && left < other.Left + MainWindow.StickOffset)
+                    //    //{
+                    //    //    if (!leftModified || Math.Abs(newLeft - left) > Math.Abs(other.Left - left))
+                    //    //    {
+                    //    //        newLeft = Math.Max(other.Left, 0);
+                    //    //        leftModified = true;
+                    //    //        Log("Posible stick left '{0}' ({1}x{2}->{3}x{4}).", other.Handle, other.Left, other.Top, other.Width, other.Height);
+                    //    //    }
+                    //    //}
 
-                        if (other.Top - MainWindow.StickOffset < top && top < other.Top + MainWindow.StickOffset)
-                        {
-                            if (!topModified || Math.Abs(newTop - top) > Math.Abs(other.Top - top))
-                            {
-                                newTop = Math.Max(other.Top, 0);
-                                topModified = true;
-                                Log("Posible stick top '{0}' ({1}x{2}->{3}x{4}).", other.Handle, other.Left, other.Top, other.Width, other.Height);
-                            }
-                        }
-                    }
+                    //    if (other.Top - StickService.StickOffset < top && top < other.Top + StickService.StickOffset)
+                    //    {
+                    //        if (!topModified || Math.Abs(newTop - top) > Math.Abs(other.Top - top))
+                    //        {
+                    //            newTop = Math.Max(other.Top, 0);
+                    //            topModified = true;
+                    //            Log("Posible stick top '{0}' ({1}x{2}->{3}x{4}).", other.Handle, other.Left, other.Top, other.Width, other.Height);
+                    //        }
+                    //    }
+                    //}
 
 
                     //StringBuilder output = new StringBuilder();

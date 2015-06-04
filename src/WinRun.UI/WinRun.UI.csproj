@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Stickers\StickService.cs" />
     <Compile Include="Stickers\Win32.cs" />
     <Compile Include="Stickers\WindowBoundsHook.cs" />
     <Compile Include="Stickers\WindowList.cs" />

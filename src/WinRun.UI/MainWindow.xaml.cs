@@ -26,17 +26,11 @@ namespace WinRun.UI
     public partial class MainWindow : Window
     {
         private ClockWindow clockWindow = null;
-
-        private readonly Timer timer = new Timer(2000);
-        private readonly HashSet<IntPtr> windows = new HashSet<IntPtr>();
-        private readonly List<WindowBoundsHook> hooks = new List<WindowBoundsHook>();
+        private StickService stickService;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            timer.Elapsed += timer_Elapsed;
-            timer.Start();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -78,6 +72,9 @@ namespace WinRun.UI
                 WindowInteropHelper interop = new WindowInteropHelper(this);
                 SendMessage(interop.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
             });
+
+            stickService = new StickService(Dispatcher);
+            stickService.Install();
         }
 
         [DllImport("user32.dll")]
@@ -99,25 +96,11 @@ namespace WinRun.UI
         }
 
 
-
-        public const int StickOffset = 20;
-
-        private void timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            IntPtr current = Stickers.Win32.GetForegroundWindow();
-            if (current != null && !windows.Contains(current))
-            {
-                windows.Add(current);
-                DispatcherHelper.Run(Dispatcher, () => hooks.Add(new WindowBoundsHook(current, Log).Install()));
-            }
-        }
-
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
 
-            foreach (var hook in hooks)
-                hook.Uninstall();
+            stickService.UnInstall();
         }
 
         private void Log(string messageFormat, params object[] parameters)
