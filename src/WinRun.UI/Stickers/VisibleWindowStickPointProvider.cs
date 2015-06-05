@@ -8,53 +8,60 @@ namespace WinRun.UI.Stickers
 {
     public class VisibleWindowStickPointProvider : IStickPointProvider
     {
-        public IEnumerable<StickInfo> ForTop()
+        private readonly int priority;
+
+        public VisibleWindowStickPointProvider(int priority)
         {
-            List<StickInfo> result = new List<StickInfo>();
+            this.priority = priority;
+        }
+
+        public IEnumerable<StickPoint> ForTop()
+        {
+            List<StickPoint> result = new List<StickPoint>();
             foreach (IntPtr handle in Win32.GetTopLevelWindows().Where(Win32.IsWindowVisible))
             {
                 Win32.RECT info;
                 if (Win32.GetWindowRect(handle, out info))
-                    result.Add(new StickInfo(handle, info.Bottom));
+                    result.Add(new StickPoint(handle, info.Bottom, priority));
             }
 
             return result;
         }
 
-        public IEnumerable<StickInfo> ForBottom()
+        public IEnumerable<StickPoint> ForBottom()
         {
-            List<StickInfo> result = new List<StickInfo>();
+            List<StickPoint> result = new List<StickPoint>();
             foreach (IntPtr handle in Win32.GetTopLevelWindows().Where(Win32.IsWindowVisible))
             {
                 Win32.RECT info;
                 if (Win32.GetWindowRect(handle, out info))
-                    result.Add(new StickInfo(handle, info.Top));
+                    result.Add(new StickPoint(handle, info.Top, priority));
             }
 
             return result;
         }
 
-        public IEnumerable<StickInfo> ForLeft()
+        public IEnumerable<StickPoint> ForLeft()
         {
-            List<StickInfo> result = new List<StickInfo>();
+            List<StickPoint> result = new List<StickPoint>();
             foreach (IntPtr handle in Win32.GetTopLevelWindows().Where(Win32.IsWindowVisible))
             {
                 Win32.RECT info;
                 if (Win32.GetWindowRect(handle, out info))
-                    result.Add(new StickInfo(handle, info.Right));
+                    result.Add(new StickPoint(handle, info.Right, priority));
             }
 
             return result;
         }
 
-        public IEnumerable<StickInfo> ForRight()
+        public IEnumerable<StickPoint> ForRight()
         {
-            List<StickInfo> result = new List<StickInfo>();
+            List<StickPoint> result = new List<StickPoint>();
             foreach (IntPtr handle in Win32.GetTopLevelWindows().Where(Win32.IsWindowVisible))
             {
                 Win32.RECT info;
                 if (Win32.GetWindowRect(handle, out info))
-                    result.Add(new StickInfo(handle, info.Left));
+                    result.Add(new StickPoint(handle, info.Left, priority));
             }
 
             return result;

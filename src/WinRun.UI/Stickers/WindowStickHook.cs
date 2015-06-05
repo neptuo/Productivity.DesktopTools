@@ -72,38 +72,55 @@ namespace WinRun.UI.Stickers
                     StickContext topContext = new StickContext(info.Top);
                     int width = info.Right - info.Left;
                     int height = info.Bottom - info.Top;
+                    int leftPriority = Int32.MaxValue;
+                    int topPriority = Int32.MaxValue;
 
-
-                    foreach (StickInfo other in pointProvider.ForLeft())
+                    foreach (StickPoint other in pointProvider.ForLeft())
                     {
                         if (other.Handle == hwnd)
                             continue;
 
-                        leftContext.TryStickTo(other.Value);
+                        if (leftPriority < other.Priority)
+                            break;
+
+                        if (leftContext.TryStickTo(other.Value))
+                            leftPriority = other.Priority;
                     }
 
-                    foreach (StickInfo other in pointProvider.ForRight())
+                    foreach (StickPoint other in pointProvider.ForRight())
                     {
                         if (other.Handle == hwnd)
                             continue;
 
-                        leftContext.TryStickTo(other.Value, width);
+                        if (leftPriority < other.Priority)
+                            break;
+
+                        if (leftContext.TryStickTo(other.Value, width))
+                            leftPriority = other.Priority;
                     }
 
-                    foreach (StickInfo other in pointProvider.ForTop())
+                    foreach (StickPoint other in pointProvider.ForTop())
                     {
                         if (other.Handle == hwnd)
                             continue;
 
-                        topContext.TryStickTo(other.Value);
+                        if (topPriority < other.Priority)
+                            break;
+
+                        if (topContext.TryStickTo(other.Value))
+                            topPriority = other.Priority;
                     }
 
-                    foreach (StickInfo other in pointProvider.ForBottom())
+                    foreach (StickPoint other in pointProvider.ForBottom())
                     {
                         if (other.Handle == hwnd)
                             continue;
 
-                        topContext.TryStickTo(other.Value, height);
+                        if (topPriority < other.Priority)
+                            break;
+
+                        if (topContext.TryStickTo(other.Value, height))
+                            topPriority = other.Priority;
                     }
 
                     Log("Final state: {0}x{1} at {2}x{3}.", leftContext.NewPosition, topContext.NewPosition, height, width);

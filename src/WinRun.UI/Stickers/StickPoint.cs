@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace WinRun.UI.Stickers
 {
-    public class StickInfo
+    public class StickPoint
     {
         public IntPtr? Handle;
         public int Value;
+        public int Priority { get; private set; }
 
-        public StickInfo(int value)
+        public StickPoint(int value, int priority)
         {
             Value = value;
+            Priority = priority;
         }
 
-        public StickInfo(IntPtr handle, int value)
-            : this(value)
+        public StickPoint(IntPtr handle, int value, int priority)
+            : this(value, priority)
         {
             Handle = handle;
         }

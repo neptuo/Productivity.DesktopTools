@@ -9,24 +9,31 @@ namespace WinRun.UI.Stickers
 {
     public class DesktopStickPointProvider : IStickPointProvider
     {
-        public IEnumerable<StickInfo> ForTop()
+        private readonly int priority;
+
+        public DesktopStickPointProvider(int priority)
         {
-            return Screen.AllScreens.Select(s => new StickInfo(s.WorkingArea.Top));
+            this.priority = priority;
         }
 
-        public IEnumerable<StickInfo> ForBottom()
+        public IEnumerable<StickPoint> ForTop()
         {
-            return Screen.AllScreens.Select(s => new StickInfo(s.WorkingArea.Bottom));
+            return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Top, priority));
         }
 
-        public IEnumerable<StickInfo> ForLeft()
+        public IEnumerable<StickPoint> ForBottom()
         {
-            return Screen.AllScreens.Select(s => new StickInfo(s.WorkingArea.Left));
+            return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Bottom, priority));
         }
 
-        public IEnumerable<StickInfo> ForRight()
+        public IEnumerable<StickPoint> ForLeft()
         {
-            return Screen.AllScreens.Select(s => new StickInfo(s.WorkingArea.Right));
+            return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Left, priority));
+        }
+
+        public IEnumerable<StickPoint> ForRight()
+        {
+            return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Right, priority));
         }
     }
 }

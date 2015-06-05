@@ -16,22 +16,22 @@ namespace WinRun.UI.Stickers
             return this;
         }
 
-        public IEnumerable<StickInfo> ForTop()
+        public IEnumerable<StickPoint> ForTop()
         {
             return providers.SelectMany(p => p.ForTop());
         }
 
-        public IEnumerable<StickInfo> ForBottom()
+        public IEnumerable<StickPoint> ForBottom()
         {
             return providers.SelectMany(p => p.ForBottom());
         }
 
-        public IEnumerable<StickInfo> ForLeft()
+        public IEnumerable<StickPoint> ForLeft()
         {
             return providers.SelectMany(p => p.ForLeft());
         }
 
-        public IEnumerable<StickInfo> ForRight()
+        public IEnumerable<StickPoint> ForRight()
         {
             return providers.SelectMany(p => p.ForRight());
         }

@@ -8,9 +8,9 @@ namespace WinRun.UI.Stickers
 {
     public interface IStickPointProvider
     {
-        IEnumerable<StickInfo> ForTop();
-        IEnumerable<StickInfo> ForBottom();
-        IEnumerable<StickInfo> ForLeft();
-        IEnumerable<StickInfo> ForRight();
+        IEnumerable<StickPoint> ForTop();
+        IEnumerable<StickPoint> ForBottom();
+        IEnumerable<StickPoint> ForLeft();
+        IEnumerable<StickPoint> ForRight();
     }
 }

@@ -23,8 +23,8 @@ namespace WinRun.UI.Stickers
             timer.Elapsed += OnTimer;
 
             pointProvider = new StickPointProviderCollection()
-                .AddProvider(new DesktopStickPointProvider())
-                .AddProvider(new VisibleWindowStickPointProvider());
+                .AddProvider(new DesktopStickPointProvider(1))
+                .AddProvider(new VisibleWindowStickPointProvider(2));
         }
 
         public const int StickOffset = 20;
