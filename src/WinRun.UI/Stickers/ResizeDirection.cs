@@ -9,8 +9,8 @@ namespace WinRun.UI.Stickers
     [Flags]
     public enum ResizeDirection
     {
-        Empty,
-        Width,
-        Height
+        Empty = 0,
+        Width = 1,
+        Height = 2
     }
 }

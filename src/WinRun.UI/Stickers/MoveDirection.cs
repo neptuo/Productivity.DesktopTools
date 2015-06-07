@@ -9,10 +9,10 @@ namespace WinRun.UI.Stickers
     [Flags]
     public enum MoveDirection
     {
-        Empty,
-        LeftToRight,
-        RightToLeft,
-        TopToBottom,
-        BottomToTop
+        Empty = 0,
+        LeftToRight = 1,
+        RightToLeft = 2,
+        TopToBottom = 4,
+        BottomToTop = 8
     }
 }

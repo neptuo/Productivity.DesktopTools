@@ -77,21 +77,42 @@ namespace WinRun.UI.Stickers
                     else if (initialPosition.Top > currentPosition.Top)
                         move |= MoveDirection.BottomToTop;
 
+                    bool wasMoveEmpty = move == MoveDirection.Empty;
                     if (initialPosition.Width != currentPosition.Width)
+                    {
                         resize |= ResizeDirection.Width;
 
+                        if (wasMoveEmpty)
+                            move |= MoveDirection.LeftToRight;
+                    }
+
                     if (initialPosition.Height != currentPosition.Height)
+                    {
                         resize |= ResizeDirection.Height;
+
+                        if (wasMoveEmpty)
+                            move |= MoveDirection.TopToBottom;
+                    }
                 }
 
                 Log("User state: {0}x{1} at {2}x{3}.", currentPosition.Left, currentPosition.Top, currentPosition.Width, currentPosition.Height);
 
-                StickContext left = new StickContext(currentPosition.Left);
-                StickContext top = new StickContext(currentPosition.Top);
+                StickContext left;
+                if (resize.HasFlag(ResizeDirection.Width))
+                    left = new StickContext(currentPosition.Left, currentPosition.Width);
+                else
+                    left = new StickContext(currentPosition.Left);
+
+                StickContext top;
+                if (resize.HasFlag(ResizeDirection.Height))
+                    top = new StickContext(currentPosition.Top, currentPosition.Height);
+                else
+                    top = new StickContext(currentPosition.Top);
+
                 int leftPriority = Int32.MaxValue;
                 int topPriority = Int32.MaxValue;
 
-                if (move.HasFlag(MoveDirection.RightToLeft))
+                if (move.HasFlag(MoveDirection.RightToLeft) || move.HasFlag(MoveDirection.LeftToRight))
                 {
                     foreach (StickPoint other in pointProvider.ForLeft())
                     {
@@ -104,9 +125,7 @@ namespace WinRun.UI.Stickers
                         if (left.TryStickTo(other.Value))
                             leftPriority = other.Priority;
                     }
-                }
-                else if (move.HasFlag(MoveDirection.LeftToRight))
-                {
+
                     foreach (StickPoint other in pointProvider.ForRight())
                     {
                         if (other.Handle == handle)
@@ -120,7 +139,7 @@ namespace WinRun.UI.Stickers
                     }
                 }
 
-                if (move.HasFlag(MoveDirection.BottomToTop))
+                if (move.HasFlag(MoveDirection.BottomToTop) || move.HasFlag(MoveDirection.TopToBottom))
                 {
                     foreach (StickPoint other in pointProvider.ForTop())
                     {
@@ -133,9 +152,7 @@ namespace WinRun.UI.Stickers
                         if (top.TryStickTo(other.Value))
                             topPriority = other.Priority;
                     }
-                }
-                else if (move.HasFlag(MoveDirection.TopToBottom))
-                {
+                 
                     foreach (StickPoint other in pointProvider.ForBottom())
                     {
                         if (other.Handle == handle)
@@ -149,7 +166,15 @@ namespace WinRun.UI.Stickers
                     }
                 }
 
-                Win32.SetWindowPos(handle, IntPtr.Zero, left.NewPosition, top.NewPosition, currentPosition.Width, currentPosition.Height, 0);
+                Win32.SetWindowPos(
+                    handle, 
+                    IntPtr.Zero, 
+                    left.NewPosition, 
+                    top.NewPosition, 
+                    left.IsResize ? left.NewSize : currentPosition.Width, 
+                    top.IsResize ? top.NewSize : currentPosition.Height, 
+                    0
+                );
             }
         }
 
