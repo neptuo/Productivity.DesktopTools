@@ -14,6 +14,7 @@ namespace WinRun.UI.Stickers
         private readonly IStickPointProvider pointProvider;
         private readonly Win32.WinEventDelegate hookDelegate;
         private IntPtr hookPointer;
+        private Position initialPosition;
 
         public WindowStickHook(IntPtr handle, IStickPointProvider pointProvider)
         {
@@ -42,94 +43,113 @@ namespace WinRun.UI.Stickers
             Win32.UnhookWinEvent(hookPointer);
         }
 
-        private void WndProc2(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        private void WndProc2(IntPtr hWinEventHook, uint eventType, IntPtr handle, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            if (hwnd != handle)
+            if (this.handle != handle)
                 return;
 
-            if (eventType == (uint)Win32.EventContants.EVENT_OBJECT_LOCATIONCHANGE)
-            {
-                Log("Location of '{0}' changed.", hwnd);
-            }
-
-            // Handle messages...
             if (eventType == (uint)Win32.EventContants.EVENT_SYSTEM_MOVESIZESTART)
             {
-                Log("Starting to move or resize window '{0}' ('{1}', '{2}', '{3}', '{4}').", hwnd, idObject, idChild, dwEventThread, dwmsEventTime);
+                Log("Starting to move or resize window '{0}' ('{1}', '{2}', '{3}', '{4}').", handle, idObject, idChild, dwEventThread, dwmsEventTime);
+                initialPosition = GetWindowPositionOrDefault(handle);
             }
-            // Handle messages...
-            if (eventType == (uint)Win32.EventContants.EVENT_SYSTEM_MOVESIZEEND)
+            else if (eventType == (uint)Win32.EventContants.EVENT_SYSTEM_MOVESIZEEND)
             {
-                Log("Resized or moved window '{0}' (from '{5}') ('{1}', '{2}', '{3}', '{4}').", hwnd, idObject, idChild, dwEventThread, dwmsEventTime, handle);
+                Log("Resized or moved window '{0}' (from '{5}') ('{1}', '{2}', '{3}', '{4}').", handle, idObject, idChild, dwEventThread, dwmsEventTime, handle);
                 //Win32.SetWindowPos(hwnd, IntPtr.Zero, 100, 100, 400, 400, 0);
 
-                Win32.RECT info;
-                if (Win32.GetWindowRect(hwnd, out info))
-                {
-                    Log("User state: {0}x{1} at {2}x{3}.", info.Top, info.Left, info.Bottom, info.Right);
-                    
-                    StickContext leftContext = new StickContext(info.Left);
-                    StickContext topContext = new StickContext(info.Top);
-                    int width = info.Right - info.Left;
-                    int height = info.Bottom - info.Top;
-                    int leftPriority = Int32.MaxValue;
-                    int topPriority = Int32.MaxValue;
+                Position currentPosition = GetWindowPositionOrDefault(handle);
+                if (currentPosition == null)
+                    return;
 
+                ResizeDirection resize = ResizeDirection.Empty;
+                MoveDirection move = MoveDirection.Empty;
+
+                if (initialPosition != null)
+                {
+                    if (initialPosition.Left < currentPosition.Left)
+                        move |= MoveDirection.LeftToRight;
+                    else if (initialPosition.Left > currentPosition.Left)
+                        move |= MoveDirection.RightToLeft;
+
+                    if (initialPosition.Top < currentPosition.Top)
+                        move |= MoveDirection.TopToBottom;
+                    else if (initialPosition.Top > currentPosition.Top)
+                        move |= MoveDirection.BottomToTop;
+
+                    if (initialPosition.Width != currentPosition.Width)
+                        resize |= ResizeDirection.Width;
+
+                    if (initialPosition.Height != currentPosition.Height)
+                        resize |= ResizeDirection.Height;
+                }
+
+                Log("User state: {0}x{1} at {2}x{3}.", currentPosition.Left, currentPosition.Top, currentPosition.Width, currentPosition.Height);
+
+                StickContext left = new StickContext(currentPosition.Left);
+                StickContext top = new StickContext(currentPosition.Top);
+                int leftPriority = Int32.MaxValue;
+                int topPriority = Int32.MaxValue;
+
+                if (move.HasFlag(MoveDirection.RightToLeft))
+                {
                     foreach (StickPoint other in pointProvider.ForLeft())
                     {
-                        if (other.Handle == hwnd)
+                        if (other.Handle == handle)
                             continue;
 
                         if (leftPriority < other.Priority)
                             break;
 
-                        if (leftContext.TryStickTo(other.Value))
+                        if (left.TryStickTo(other.Value))
                             leftPriority = other.Priority;
                     }
-
+                }
+                else if (move.HasFlag(MoveDirection.LeftToRight))
+                {
                     foreach (StickPoint other in pointProvider.ForRight())
                     {
-                        if (other.Handle == hwnd)
+                        if (other.Handle == handle)
                             continue;
 
                         if (leftPriority < other.Priority)
                             break;
 
-                        if (leftContext.TryStickTo(other.Value, width))
+                        if (left.TryStickTo(other.Value, currentPosition.Width))
                             leftPriority = other.Priority;
                     }
+                }
 
+                if (move.HasFlag(MoveDirection.BottomToTop))
+                {
                     foreach (StickPoint other in pointProvider.ForTop())
                     {
-                        if (other.Handle == hwnd)
+                        if (other.Handle == handle)
                             continue;
 
                         if (topPriority < other.Priority)
                             break;
 
-                        if (topContext.TryStickTo(other.Value))
+                        if (top.TryStickTo(other.Value))
                             topPriority = other.Priority;
                     }
-
+                }
+                else if (move.HasFlag(MoveDirection.TopToBottom))
+                {
                     foreach (StickPoint other in pointProvider.ForBottom())
                     {
-                        if (other.Handle == hwnd)
+                        if (other.Handle == handle)
                             continue;
 
                         if (topPriority < other.Priority)
                             break;
 
-                        if (topContext.TryStickTo(other.Value, height))
+                        if (top.TryStickTo(other.Value, currentPosition.Height))
                             topPriority = other.Priority;
                     }
+                }
 
-                    Log("Final state: {0}x{1} at {2}x{3}.", leftContext.NewPosition, topContext.NewPosition, height, width);
-                    Win32.SetWindowPos(hwnd, IntPtr.Zero, leftContext.NewPosition, topContext.NewPosition, width, height, 0);
-                }
-                else
-                {
-                    Log("Unnable to get window info '{0}'.", hwnd);
-                }
+                Win32.SetWindowPos(handle, IntPtr.Zero, left.NewPosition, top.NewPosition, currentPosition.Width, currentPosition.Height, 0);
             }
         }
 
@@ -141,6 +161,15 @@ namespace WinRun.UI.Stickers
             StringBuilder content = new StringBuilder(1024);
             Win32.GetWindowText(handle.Value, content, content.Capacity);
             return content.ToString();
+        }
+
+        private Position GetWindowPositionOrDefault(IntPtr handle)
+        {
+            Win32.RECT info;
+            if (Win32.GetWindowRect(handle, out info))
+                return new Position(info.Left, info.Top, info.Right - info.Left, info.Bottom - info.Top);
+
+            return null;
         }
 
         private void Log(string messageFormat, params object[] parameters)

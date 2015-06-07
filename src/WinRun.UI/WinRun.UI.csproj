@@ -106,6 +106,9 @@
     <Compile Include="IBackgroundService.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
     <Compile Include="Stickers\IStickPointProvider.cs" />
+    <Compile Include="Stickers\MoveDirection.cs" />
+    <Compile Include="Stickers\Position.cs" />
+    <Compile Include="Stickers\ResizeDirection.cs" />
     <Compile Include="Stickers\StickContext.cs" />
     <Compile Include="Stickers\StickPoint.cs" />
     <Compile Include="Stickers\StickPointProviderCollection.cs" />
