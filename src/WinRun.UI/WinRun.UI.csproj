@@ -106,10 +106,12 @@
     <Compile Include="Hotkeys\Hotkey.cs" />
     <Compile Include="Hotkeys\HotkeyService.cs" />
     <Compile Include="Hotkeys\IHotkeyCollection.cs" />
+    <Compile Include="Hotkeys\IHotkeyHandler.cs" />
     <Compile Include="Hotkeys\Win32.cs" />
     <Compile Include="Hotkeys\WindowHotkeyCollection.cs" />
     <Compile Include="Hotkeys\_HotkeyCollectionExtensions.cs" />
     <Compile Include="IBackgroundService.cs" />
+    <Compile Include="LockWorkStationHandler.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
     <Compile Include="Stickers\IStickPointProvider.cs" />
     <Compile Include="Stickers\MoveDirection.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Stickers\Win32.cs" />
     <Compile Include="Stickers\WindowStickHook.cs" />
     <Compile Include="Stickers\WindowList.cs" />
+    <Compile Include="TurnMonitorOffHandler.cs" />
     <Page Include="ClockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

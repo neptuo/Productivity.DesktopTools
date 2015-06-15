@@ -42,11 +42,7 @@ namespace WinRun.UI
             hotkeyService = new HotkeyService(this);
             hotkeyService.Install();
 
-            hotkeyService.Add(ModifierKeys.Windows, Key.F3, delegate
-            {
-                WindowInteropHelper interop = new WindowInteropHelper(this);
-                SendMessage(interop.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
-            });
+            hotkeyService.Add(new TurnMonitorOffHandler(this));
             hotkeyService.Add(ModifierKeys.Windows, Key.F4, delegate
             {
                 System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Suspend, true, true);
@@ -81,12 +77,7 @@ namespace WinRun.UI
                 clockWindow.Show();
                 clockWindow.Activate();
             });
-            hotkeyService.Add(ModifierKeys.Windows | ModifierKeys.Shift, Key.L, delegate
-            {
-                LockWorkStation();
-                WindowInteropHelper interop = new WindowInteropHelper(this);
-                SendMessage(interop.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
-            });
+            hotkeyService.Add(new LockWorkStationHandler(this));
 
             stickService = new StickService(Dispatcher);
             stickService.Install();
@@ -96,19 +87,6 @@ namespace WinRun.UI
         {
             //throw new NotImplementedException();
         }
-
-        [DllImport("user32.dll")]
-        public static extern void LockWorkStation();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
-
-        static int WM_SYSCOMMAND = 0x112;
-        static IntPtr SC_MONITORPOWER = new IntPtr(0xF170);
-
-        static IntPtr MONITOR_ON = new IntPtr(-1);
-        static IntPtr MONITOR_OFF = new IntPtr(2);
-        static IntPtr MONITOR_STANBY = new IntPtr(1);
 
         private void Window_Activated_1(object sender, EventArgs e)
         {

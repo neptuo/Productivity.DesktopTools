@@ -14,6 +14,11 @@ namespace WinRun.UI.Hotkeys
             return collection.Add(new Hotkey(modifier, key), handler);
         }
 
+        public static IHotkeyCollection Add(this IHotkeyCollection collection, IHotkeyHandler handler)
+        {
+            return collection.Add(handler.Hotkey, handler.Handle);
+        }
+
         public static IHotkeyCollection Remove(this IHotkeyCollection collection, ModifierKeys modifier, Key key)
         {
             return collection.Remove(new Hotkey(modifier, key));
