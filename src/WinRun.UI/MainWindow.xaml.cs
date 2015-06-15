@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WinRun.UI.Hotkeys;
 using WinRun.UI.Stickers;
 
 namespace WinRun.UI
@@ -27,6 +28,7 @@ namespace WinRun.UI
     {
         private ClockWindow clockWindow = null;
         private StickService stickService;
+        private HotkeyService hotkeyService;
 
         public MainWindow()
         {
@@ -37,36 +39,49 @@ namespace WinRun.UI
         {
             base.OnSourceInitialized(e);
 
-            HotkeyHelper helper = new HotkeyHelper(this);
-            helper.Register(Key.F3, ModifierKeys.Windows, delegate
+            hotkeyService = new HotkeyService(this);
+            hotkeyService.Install();
+
+            hotkeyService.Add(ModifierKeys.Windows, Key.F3, delegate
             {
                 WindowInteropHelper interop = new WindowInteropHelper(this);
                 SendMessage(interop.Handle, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
             });
-            helper.Register(Key.F4, ModifierKeys.Windows, delegate
+            hotkeyService.Add(ModifierKeys.Windows, Key.F4, delegate
             {
                 System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Suspend, true, true);
             });
-            helper.Register(Key.F12, ModifierKeys.Windows, delegate
+            hotkeyService.Add(ModifierKeys.Windows, Key.F12, delegate
             {
                 System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Hibernate, true, true);
             });
-            helper.Register(Key.F5, ModifierKeys.Windows, delegate
+            hotkeyService.Add(ModifierKeys.Windows, Key.F5, delegate
             {
                 Process.Start(@"C:\Windows\explorer.exe", "::{7007ACC7-3202-11D1-AAD2-00805FC1270E}");
             });
-            helper.Register(Key.F6, ModifierKeys.Windows, delegate
+            hotkeyService.Add(ModifierKeys.Windows, Key.F6, delegate
             {
                 if (clockWindow == null)
                 {
                     clockWindow = new ClockWindow();
                     clockWindow.Closed += (sender, args) => { clockWindow = null; };
                 }
-                clockWindow.SetClockSize(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.Right) ? ClockSize.Medium : ClockSize.Large);
+                clockWindow.SetClockSize(ClockSize.Large);
                 clockWindow.Show();
                 clockWindow.Activate();
             });
-            helper.Register(Key.L, ModifierKeys.Windows | ModifierKeys.Shift, delegate
+            hotkeyService.Add(ModifierKeys.Windows | ModifierKeys.Shift, Key.F6, delegate
+            {
+                if (clockWindow == null)
+                {
+                    clockWindow = new ClockWindow();
+                    clockWindow.Closed += (sender, args) => { clockWindow = null; };
+                }
+                clockWindow.SetClockSize(ClockSize.Medium);
+                clockWindow.Show();
+                clockWindow.Activate();
+            });
+            hotkeyService.Add(ModifierKeys.Windows | ModifierKeys.Shift, Key.L, delegate
             {
                 LockWorkStation();
                 WindowInteropHelper interop = new WindowInteropHelper(this);
@@ -75,6 +90,11 @@ namespace WinRun.UI
 
             stickService = new StickService(Dispatcher);
             stickService.Install();
+        }
+
+        private void OnWinEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        {
+            //throw new NotImplementedException();
         }
 
         [DllImport("user32.dll")]
@@ -101,6 +121,7 @@ namespace WinRun.UI
             base.OnClosed(e);
 
             stickService.UnInstall();
+            hotkeyService.UnInstall();
         }
 
         private void Log(string messageFormat, params object[] parameters)
