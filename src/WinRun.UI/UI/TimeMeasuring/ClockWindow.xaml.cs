@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using WinRun.Properties;
 
-namespace WinRun.UI
+namespace WinRun.UI.TimeMeasuring
 {
     public enum ClockSize
     {

@@ -50,5 +50,15 @@ namespace WinRun.Hotkeys
         {
             return String.Format("({0} + {1})", Modifier, Key);
         }
+
+        public static bool operator ==(Hotkey left, Hotkey right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Hotkey left, Hotkey right)
+        {
+            return !Equals(left, right);
+        }
     }
 }
