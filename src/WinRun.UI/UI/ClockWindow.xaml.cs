@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using WinRun.UI.Properties;
+using WinRun.Properties;
 
 namespace WinRun.UI
 {

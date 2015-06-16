@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using WinRun.UI.Hotkeys;
+using WinRun.Hotkeys;
 
 namespace WinRun.UI
 {

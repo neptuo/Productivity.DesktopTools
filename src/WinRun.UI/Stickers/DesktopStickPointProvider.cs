@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinRun.UI.Stickers
+namespace WinRun.Stickers
 {
     public class DesktopStickPointProvider : IStickPointProvider
     {

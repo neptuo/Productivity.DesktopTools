@@ -7,7 +7,7 @@
     <ProjectGuid>{5EBC896B-BFFF-4F47-B77B-1A1B64E8E53E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinRun.UI</RootNamespace>
+    <RootNamespace>WinRun</RootNamespace>
     <AssemblyName>WinRun.UI</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -99,7 +99,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="UI\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -111,7 +111,7 @@
     <Compile Include="Hotkeys\WindowHotkeyCollection.cs" />
     <Compile Include="Hotkeys\_HotkeyCollectionExtensions.cs" />
     <Compile Include="IBackgroundService.cs" />
-    <Compile Include="LockWorkStationHandler.cs" />
+    <Compile Include="UI\LockWorkStationHandler.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
     <Compile Include="Stickers\IStickPointProvider.cs" />
     <Compile Include="Stickers\MoveDirection.cs" />
@@ -125,24 +125,23 @@
     <Compile Include="Stickers\Win32.cs" />
     <Compile Include="Stickers\WindowStickHook.cs" />
     <Compile Include="Stickers\WindowList.cs" />
-    <Compile Include="TurnMonitorOffHandler.cs" />
-    <Page Include="ClockWindow.xaml">
+    <Compile Include="UI\TurnMonitorOffHandler.cs" />
+    <Page Include="UI\ClockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="UI\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClockWindow.xaml.cs">
+    <Compile Include="UI\ClockWindow.xaml.cs">
       <DependentUpon>ClockWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HotkeyHelper.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -196,7 +195,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

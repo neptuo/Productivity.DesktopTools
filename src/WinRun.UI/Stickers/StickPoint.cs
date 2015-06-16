@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinRun.UI.Stickers
+namespace WinRun.Stickers
 {
     public class StickPoint
     {

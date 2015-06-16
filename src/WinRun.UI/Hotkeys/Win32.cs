@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinRun.UI.Hotkeys
+namespace WinRun.Hotkeys
 {
     internal static class Win32
     {

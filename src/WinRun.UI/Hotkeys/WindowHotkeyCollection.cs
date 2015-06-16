@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace WinRun.UI.Hotkeys
+namespace WinRun.Hotkeys
 {
     public class WindowHotkeyCollection : IHotkeyCollection, IDisposable
     {

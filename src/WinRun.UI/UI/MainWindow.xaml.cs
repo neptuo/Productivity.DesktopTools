@@ -16,8 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WinRun.UI.Hotkeys;
-using WinRun.UI.Stickers;
+using WinRun.Hotkeys;
+using WinRun.Stickers;
 
 namespace WinRun.UI
 {

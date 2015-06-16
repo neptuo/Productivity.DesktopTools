@@ -6,7 +6,7 @@
     using System.Runtime.InteropServices;
     using System.Text;
 
-namespace WinRun.UI.Stickers
+namespace WinRun.Stickers
 {
 
     /// <summary>

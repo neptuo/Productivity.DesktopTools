@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Threading;
 
-namespace WinRun.UI.Stickers
+namespace WinRun.Stickers
 {
     public class StickService : IBackgroundService
     {

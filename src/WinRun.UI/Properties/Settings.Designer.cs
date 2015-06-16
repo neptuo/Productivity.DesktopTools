@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WinRun.UI.Properties {
+namespace WinRun.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
