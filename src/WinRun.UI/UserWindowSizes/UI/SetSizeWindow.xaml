@@ -1,0 +1,39 @@
+﻿<Window x:Class="WinRun.UserWindowSizes.UI.SetSizeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SetSizeWindow" Height="300" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Content="{Binding Title}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" />
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <Label Content="Left" />
+            <TextBox Text="{Binding Left}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Label Content="Top" />
+            <TextBox Text="{Binding Top}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0">
+            <Label Content="Width" />
+            <TextBox Text="{Binding Width}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <Label Content="Height" />
+            <TextBox Text="{Binding Height}" />
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button Content="Set position and size" Command="{Binding ApplyCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>

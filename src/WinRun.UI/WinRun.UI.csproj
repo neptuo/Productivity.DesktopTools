@@ -79,6 +79,14 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Neptuo, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Neptuo.5.0.1\lib\net45\Neptuo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Neptuo.Observables, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Neptuo.Observables.1.1.0\lib\net45\Neptuo.Observables.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Neptuo.Windows.Threading">
       <HintPath>..\..\references\Neptuo.Windows.Threading.dll</HintPath>
     </Reference>
@@ -129,6 +137,12 @@
     <Compile Include="UI\SystemSuspendHandler.cs" />
     <Compile Include="UI\TimeMeasuring\ClockHandler.cs" />
     <Compile Include="UI\TurnMonitorOffHandler.cs" />
+    <Compile Include="UserWindowSizes\SetSizeHotkeyHandler.cs" />
+    <Compile Include="UserWindowSizes\UI\SetSizeWindow.xaml.cs">
+      <DependentUpon>SetSizeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserWindowSizes\UI\ViewModels\SetSizeViewModel.cs" />
+    <Compile Include="UserWindowSizes\Win32.cs" />
     <Page Include="UI\TimeMeasuring\ClockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +162,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserWindowSizes\UI\SetSizeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -168,6 +186,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using WinRun.Hotkeys;
 using WinRun.Stickers;
 using WinRun.UI.TimeMeasuring;
+using WinRun.UserWindowSizes;
 
 namespace WinRun.UI
 {
@@ -56,6 +57,8 @@ namespace WinRun.UI
 
             stickService = new StickService(Dispatcher);
             stickService.Install();
+
+            hotkeyService.Add(new SetSizeHotkeyHandler());
         }
 
         protected override void OnClosed(EventArgs e)
