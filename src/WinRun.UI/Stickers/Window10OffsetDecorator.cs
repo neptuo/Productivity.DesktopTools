@@ -13,6 +13,8 @@ namespace WinRun.Stickers
         public const int WindowWidthOverlap = -16;
         public const int WindowHeightOverlap = -3;
 
+        public const int WindowOtherLeftOverlap = -7;
+
         public const int VerticalOffset = 4;
         public const int HorizontalOffset = 4;
 
