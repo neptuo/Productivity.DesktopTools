@@ -122,8 +122,8 @@ namespace WinRun.Stickers
                 Position targetPosition = new Position(
                     left.NewPosition,
                     top.NewPosition,
-                    (left.IsResize ? left.NewSize : currentPosition.Width) - windows10WidthMagic,
-                    (top.IsResize ? top.NewSize : currentPosition.Height) - windows10HeightMagic
+                    left.IsResize ? left.NewSize : currentPosition.Width,
+                    top.IsResize ? top.NewSize : currentPosition.Height
                 );
 
                 Log("Stick state: {0}x{1} at {2}x{3}.", targetPosition.Left, targetPosition.Top, targetPosition.Width, targetPosition.Height);
@@ -133,8 +133,8 @@ namespace WinRun.Stickers
                     IntPtr.Zero,
                     targetPosition.Left,
                     targetPosition.Top,
-                    targetPosition.Width,
-                    targetPosition.Height,
+                    targetPosition.Width - Window10OffsetDecorator.WindowWidthOverlap,
+                    targetPosition.Height - Window10OffsetDecorator.WindowHeightOverlap,
                     0
                 );
             }
@@ -214,13 +214,17 @@ namespace WinRun.Stickers
         {
             Win32.RECT info;
             if (Win32.GetWindowRect(handle, out info))
-                return new Position(info.Left, info.Top, info.Right - info.Left + windows10WidthMagic, info.Bottom - info.Top + windows10HeightMagic);
+            {
+                return new Position(
+                    info.Left, 
+                    info.Top, 
+                    info.Right - info.Left + Window10OffsetDecorator.WindowWidthOverlap, 
+                    info.Bottom - info.Top + Window10OffsetDecorator.WindowHeightOverlap
+                );
+            }
 
             return null;
         }
-
-        private const int windows10WidthMagic = -16;
-        private const int windows10HeightMagic = -3;
 
         private void Log(string messageFormat, params object[] parameters)
         {

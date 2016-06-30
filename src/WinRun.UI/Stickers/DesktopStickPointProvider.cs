@@ -28,7 +28,7 @@ namespace WinRun.Stickers
 
         public IEnumerable<StickPoint> ForLeft()
         {
-            return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Left - 3, priority));
+            return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Left + Window10OffsetDecorator.DesktopLeftOffset, priority));
         }
 
         public IEnumerable<StickPoint> ForRight()
