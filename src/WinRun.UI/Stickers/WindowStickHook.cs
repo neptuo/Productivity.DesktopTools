@@ -119,13 +119,22 @@ namespace WinRun.Stickers
                 if (move == MoveDirection.Empty && resize.HasFlag(ResizeDirection.Height))
                     TryStickBottom(top, currentPosition, ref topPriority);
 
+                Position targetPosition = new Position(
+                    left.NewPosition,
+                    top.NewPosition,
+                    (left.IsResize ? left.NewSize : currentPosition.Width) - windows10WidthMagic,
+                    (top.IsResize ? top.NewSize : currentPosition.Height) - windows10HeightMagic
+                );
+
+                Log("Stick state: {0}x{1} at {2}x{3}.", targetPosition.Left, targetPosition.Top, targetPosition.Width, targetPosition.Height);
+
                 Win32.SetWindowPos(
                     handle, 
-                    IntPtr.Zero, 
-                    left.NewPosition, 
-                    top.NewPosition, 
-                    left.IsResize ? left.NewSize : currentPosition.Width, 
-                    top.IsResize ? top.NewSize : currentPosition.Height, 
+                    IntPtr.Zero,
+                    targetPosition.Left,
+                    targetPosition.Top,
+                    targetPosition.Width,
+                    targetPosition.Height,
                     0
                 );
             }
@@ -205,13 +214,17 @@ namespace WinRun.Stickers
         {
             Win32.RECT info;
             if (Win32.GetWindowRect(handle, out info))
-                return new Position(info.Left, info.Top, info.Right - info.Left, info.Bottom - info.Top);
+                return new Position(info.Left, info.Top, info.Right - info.Left + windows10WidthMagic, info.Bottom - info.Top + windows10HeightMagic);
 
             return null;
         }
 
+        private const int windows10WidthMagic = -16;
+        private const int windows10HeightMagic = -3;
+
         private void Log(string messageFormat, params object[] parameters)
         {
+            Console.WriteLine(messageFormat, parameters);
         }
     }
 }
