@@ -23,5 +23,13 @@ namespace WinRun.Stickers
         {
             Handle = handle;
         }
+
+        public static StickPoint Create(IntPtr? handle, int value, int priority)
+        {
+            if (handle == null)
+                return new StickPoint(value, priority);
+
+            return new StickPoint(handle.Value, value, priority);
+        }
     }
 }

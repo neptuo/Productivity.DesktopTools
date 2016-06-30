@@ -119,6 +119,8 @@
     <Compile Include="Hotkeys\WindowHotkeyCollection.cs" />
     <Compile Include="Hotkeys\_HotkeyCollectionExtensions.cs" />
     <Compile Include="IBackgroundService.cs" />
+    <Compile Include="Stickers\IStickPointDecorator.cs" />
+    <Compile Include="Stickers\Window10OffsetDecorator.cs" />
     <Compile Include="UI\LockWorkStationHandler.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
     <Compile Include="Stickers\IStickPointProvider.cs" />

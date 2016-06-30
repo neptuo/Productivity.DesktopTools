@@ -159,9 +159,8 @@ namespace WinRun.Stickers
             GCHandle gch = GCHandle.FromIntPtr(pointer);
             List<IntPtr> list = gch.Target as List<IntPtr>;
             if (list == null)
-            {
                 throw new InvalidCastException("GCHandle Target could not be cast as List<IntPtr>");
-            }
+
             list.Add(handle);
             return true;
         }
