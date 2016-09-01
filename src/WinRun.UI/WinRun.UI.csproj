@@ -138,6 +138,10 @@
     <Compile Include="UI\NetworkConnectionsHandler.cs" />
     <Compile Include="UI\SystemSuspendHandler.cs" />
     <Compile Include="UI\TimeMeasuring\ClockHandler.cs" />
+    <Compile Include="UI\TimeMeasuring\EmptyWindow.xaml.cs">
+      <DependentUpon>EmptyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TimeMeasuring\Win32.cs" />
     <Compile Include="UI\TurnMonitorOffHandler.cs" />
     <Compile Include="UserWindowSizes\SetSizeHotkeyHandler.cs" />
     <Compile Include="UserWindowSizes\UI\SetSizeWindow.xaml.cs">
@@ -164,6 +168,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UI\TimeMeasuring\EmptyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserWindowSizes\UI\SetSizeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

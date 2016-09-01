@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -27,11 +28,14 @@ namespace WinRun.UI.TimeMeasuring
     /// </summary>
     public partial class ClockWindow : Window
     {
+        private readonly VirtualDesktopManager virtualDesktopManager;
         private DispatcherTimer timer;
-        
+        private IntPtr handle;
+
         public ClockWindow()
         {
             InitializeComponent();
+            this.virtualDesktopManager = new VirtualDesktopManager();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -44,11 +48,29 @@ namespace WinRun.UI.TimeMeasuring
             Left = Settings.Default.ClockLeft;
             Top = Settings.Default.ClockTop;
             UpdateDateTime();
+
+            handle = new WindowInteropHelper(this).Handle;
+        }
+
+        private void EnsureCurrentVirtualDesktop()
+        {
+            if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
+            {
+                EmptyWindow wnd = new EmptyWindow();
+                wnd.Show();
+                virtualDesktopManager.MoveWindowToDesktop(
+                    handle, 
+                    virtualDesktopManager.GetWindowDesktopId(new WindowInteropHelper(wnd).Handle)
+                );
+                wnd.Close();
+                wnd = null;
+            }
         }
 
         private void Timer_Elapsed(object sender, EventArgs e)
         {
             UpdateDateTime();
+            EnsureCurrentVirtualDesktop();
         }
 
         public void UpdateDateTime()
