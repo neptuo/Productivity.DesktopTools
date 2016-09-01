@@ -55,6 +55,7 @@ namespace WinRun.UI
             hotkeyService.Add(clockHandler.LargeHotkey, clockHandler.Handle);
             hotkeyService.Add(clockHandler.MediumHotkey, clockHandler.Handle);
 
+            // http://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
             stickService = new StickService(Dispatcher);
             stickService.Install();
 

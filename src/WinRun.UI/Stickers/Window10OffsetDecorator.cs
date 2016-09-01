@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinRun.Stickers
 {
+    // http://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
     public class Window10OffsetDecorator : IStickPointDecorator
     {
         public const int DesktopLeftOffset = -3;

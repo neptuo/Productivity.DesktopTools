@@ -28,6 +28,7 @@ namespace WinRun.Stickers
 
         public IEnumerable<StickPoint> ForLeft()
         {
+            // http://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
             return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Left + Window10OffsetDecorator.DesktopLeftOffset, priority));
         }
 
