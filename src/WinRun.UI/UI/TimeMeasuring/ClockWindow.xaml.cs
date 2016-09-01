@@ -50,6 +50,7 @@ namespace WinRun.UI.TimeMeasuring
             UpdateDateTime();
 
             handle = new WindowInteropHelper(this).Handle;
+            Win32.RemoveFromAeroPeek(handle);
         }
 
         private void EnsureCurrentVirtualDesktop()

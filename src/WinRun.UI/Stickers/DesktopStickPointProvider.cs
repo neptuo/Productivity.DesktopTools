@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,11 @@ namespace WinRun.Stickers
         public DesktopStickPointProvider(int priority)
         {
             this.priority = priority;
+
+            IntPtr desktopWindow = Win32.GetDesktopWindow();
+            Win32.RECT frame;
+            int size = Marshal.SizeOf(typeof(Win32.RECT));
+            int res = Win32.DwmGetWindowAttribute(desktopWindow, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out frame, size);
         }
 
         public IEnumerable<StickPoint> ForTop()

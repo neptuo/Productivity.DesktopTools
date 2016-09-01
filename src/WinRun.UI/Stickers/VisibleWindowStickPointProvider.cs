@@ -23,6 +23,7 @@ namespace WinRun.Stickers
             //"workerw"
         };
 
+        private readonly VirtualDesktopManager virtualDesktopManager = new VirtualDesktopManager();
         private readonly int priority;
 
         public VisibleWindowStickPointProvider(int priority)
@@ -30,14 +31,17 @@ namespace WinRun.Stickers
             this.priority = priority;
         }
 
-        private IEnumerable<IntPtr> GetTopLevelWindows()
+        public IEnumerable<IntPtr> GetTopLevelWindows()
         {
             IEnumerable<IntPtr> allWindows = Win32.GetTopLevelWindows();
-            IEnumerable<IntPtr> visibleWindows = allWindows.Where(Win32.IsWindowVisible);
+            IEnumerable<IntPtr> visibleWindows = allWindows.Where(Win32.IsWindowVisible).Where(Win32.IsWindow);
 
             Console.WriteLine("AllWindows: {0}; VisibleWindows: {1}", allWindows.Count(), visibleWindows.Count());
             foreach (IntPtr handle in visibleWindows)
             {
+                if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
+                    continue;
+
                 StringBuilder className = new StringBuilder(1024);
                 Win32.GetClassName(handle, className, className.Capacity);
                 string classNameLower = className.ToString().ToLowerInvariant();
@@ -53,7 +57,14 @@ namespace WinRun.Stickers
                 if (String.IsNullOrWhiteSpace(textLower))
                     continue;
 
-                Console.WriteLine("TopLevelWindow: '{0}' -> '{1}'", className, text.ToString());
+                //Console.Write("TopLevelWindow: '{0}' -> '{1}'", className, text.ToString());
+
+                //Win32.RECT info;
+                //if (Win32.GetWindowRect(handle, out info))
+                //    Console.Write(" :: {0}x{1} -> {2}x{3}", info.Top, info.Left, info.Bottom, info.Right);
+
+                //Console.WriteLine();
+
                 yield return handle;
             }
         }
@@ -64,8 +75,8 @@ namespace WinRun.Stickers
             foreach (IntPtr handle in GetTopLevelWindows())
             {
                 Win32.RECT info;
-                if (Win32.GetWindowRect(handle, out info))
-                    result.Add(new StickPoint(handle, info.Bottom, priority)); // + Window10OffsetDecorator.WindowHeightOverlap
+                Win32.DwmGetWindowAttribute(handle, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out info, Marshal.SizeOf(typeof(Win32.RECT)));
+                result.Add(new StickPoint(handle, info.Bottom, priority));
             }
 
             return result;
@@ -90,14 +101,8 @@ namespace WinRun.Stickers
             foreach (IntPtr handle in GetTopLevelWindows())
             {
                 Win32.RECT info;
-                if (Win32.GetWindowRect(handle, out info))
-                {
-                    Win32.WINDOWPLACEMENT placement = new Win32.WINDOWPLACEMENT();
-                    placement.length = Marshal.SizeOf(placement);
-                    Win32.GetWindowPlacement(handle, ref placement);
-
-                    result.Add(new StickPoint(handle, info.Right + Window10OffsetDecorator.WindowOtherLeftOverlap, priority)); // + Window10OffsetDecorator.WindowWidthOverlap
-                }
+                Win32.DwmGetWindowAttribute(handle, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out info, Marshal.SizeOf(typeof(Win32.RECT)));
+                result.Add(new StickPoint(handle, info.Right + Window10OffsetDecorator.WindowOtherLeftOverlap, priority));
             }
 
             return result;
@@ -109,8 +114,8 @@ namespace WinRun.Stickers
             foreach (IntPtr handle in GetTopLevelWindows())
             {
                 Win32.RECT info;
-                if (Win32.GetWindowRect(handle, out info))
-                    result.Add(new StickPoint(handle, info.Left, priority));
+                Win32.DwmGetWindowAttribute(handle, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out info, Marshal.SizeOf(typeof(Win32.RECT)));
+                result.Add(new StickPoint(handle, info.Left, priority));
             }
 
             return result;

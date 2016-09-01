@@ -120,6 +120,9 @@
     <Compile Include="Hotkeys\_HotkeyCollectionExtensions.cs" />
     <Compile Include="IBackgroundService.cs" />
     <Compile Include="Stickers\IStickPointDecorator.cs" />
+    <Compile Include="Stickers\UI\StickVisualizationWindow.xaml.cs">
+      <DependentUpon>StickVisualizationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Stickers\Window10OffsetDecorator.cs" />
     <Compile Include="UI\LockWorkStationHandler.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
@@ -149,6 +152,10 @@
     </Compile>
     <Compile Include="UserWindowSizes\UI\ViewModels\SetSizeViewModel.cs" />
     <Compile Include="UserWindowSizes\Win32.cs" />
+    <Page Include="Stickers\UI\StickVisualizationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\TimeMeasuring\ClockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

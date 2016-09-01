@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Threading;
+using WinRun.Stickers.UI;
 
 namespace WinRun.Stickers
 {
@@ -23,9 +24,8 @@ namespace WinRun.Stickers
             timer.Elapsed += OnTimer;
 
             pointProvider = new StickPointProviderCollection()
-                //.AddProvider(new DesktopStickPointProvider(1))
-                .AddProvider(new VisibleWindowStickPointProvider(2))
-                .AddDecorator(new Window10OffsetDecorator());
+                .AddProvider(new DesktopStickPointProvider(1))
+                .AddProvider(new VisibleWindowStickPointProvider(2));
         }
 
         public const int StickOffset = 20;
@@ -33,6 +33,10 @@ namespace WinRun.Stickers
         public void Install()
         {
             timer.Start();
+
+            // Here you can show window, that displays window borders.
+            //StickVisualizationWindow wnd = new StickVisualizationWindow();
+            //wnd.Show();
         }
 
         private void OnTimer(object sender, ElapsedEventArgs e)

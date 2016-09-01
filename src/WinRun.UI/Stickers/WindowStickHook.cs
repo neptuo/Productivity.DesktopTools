@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,7 +36,7 @@ namespace WinRun.Stickers
                 (uint)Win32.SetWinEventHookParameter.WINEVENT_OUTOFCONTEXT
             );
 
-            Log("SetWinEventHook on '{0}' returned '{1}'.", handle, hookPointer);
+            //Log("SetWinEventHook on '{0}' returned '{1}'.", handle, hookPointer);
         }
 
         public void UnInstall()
@@ -50,17 +51,18 @@ namespace WinRun.Stickers
 
             if (eventType == (uint)Win32.EventContants.EVENT_SYSTEM_MOVESIZESTART)
             {
-                Log("Starting to move or resize window '{0}' ('{1}', '{2}', '{3}', '{4}').", handle, idObject, idChild, dwEventThread, dwmsEventTime);
+                //Log("Starting to move or resize window '{0}' ('{1}', '{2}', '{3}', '{4}').", handle, idObject, idChild, dwEventThread, dwmsEventTime);
                 initialPosition = GetWindowPositionOrDefault(handle);
             }
             else if (eventType == (uint)Win32.EventContants.EVENT_SYSTEM_MOVESIZEEND)
             {
-                Log("Resized or moved window '{0}' (from '{5}') ('{1}', '{2}', '{3}', '{4}').", handle, idObject, idChild, dwEventThread, dwmsEventTime, handle);
-                //Win32.SetWindowPos(hwnd, IntPtr.Zero, 100, 100, 400, 400, 0);
+                //Log("Resized or moved window '{0}' (from '{5}') ('{1}', '{2}', '{3}', '{4}').", handle, idObject, idChild, dwEventThread, dwmsEventTime, handle);
 
                 Position currentPosition = GetWindowPositionOrDefault(handle);
                 if (currentPosition == null)
                     return;
+
+                Win32.RECT offset = GetWindowFrameOffset(handle, currentPosition);
 
                 ResizeDirection resize = ResizeDirection.Empty;
                 MoveDirection move = MoveDirection.Empty;
@@ -84,7 +86,7 @@ namespace WinRun.Stickers
                         resize |= ResizeDirection.Height;
                 }
 
-                Log("User state: {0}x{1} at {2}x{3}.", currentPosition.Left, currentPosition.Top, currentPosition.Width, currentPosition.Height);
+                //Log("User state: {0}x{1} at {2}x{3}.", currentPosition.Left, currentPosition.Top, currentPosition.Width, currentPosition.Height);
 
                 StickContext left;
                 if (resize.HasFlag(ResizeDirection.Width))
@@ -120,24 +122,41 @@ namespace WinRun.Stickers
                     TryStickBottom(top, currentPosition, ref topPriority);
 
                 Position targetPosition = new Position(
-                    left.NewPosition,
-                    top.NewPosition,
-                    left.IsResize ? left.NewSize : currentPosition.Width,
-                    top.IsResize ? top.NewSize : currentPosition.Height
+                    left.NewPosition - offset.Left,
+                    top.NewPosition - offset.Top,
+                    (left.IsResize ? left.NewSize : currentPosition.Width) - offset.Right + offset.Left,
+                    (top.IsResize ? top.NewSize : currentPosition.Height) - offset.Bottom + offset.Top
                 );
 
-                Log("Stick state: {0}x{1} at {2}x{3}.", targetPosition.Left, targetPosition.Top, targetPosition.Width, targetPosition.Height);
-
+                //Log("Stick state: {0}x{1} at {2}x{3}.", targetPosition.Left, targetPosition.Top, targetPosition.Width, targetPosition.Height);
+                
                 Win32.SetWindowPos(
-                    handle, 
+                    handle,
                     IntPtr.Zero,
                     targetPosition.Left,
                     targetPosition.Top,
-                    targetPosition.Width - Window10OffsetDecorator.WindowWidthOverlap,
-                    targetPosition.Height - Window10OffsetDecorator.WindowHeightOverlap,
+                    targetPosition.Width,
+                    targetPosition.Height,
                     0
                 );
             }
+        }
+
+        private Win32.RECT GetWindowFrameOffset(IntPtr handle, Position currentPosition)
+        {
+            Win32.RECT realSize;
+            if (Win32.GetWindowRect(handle, out realSize))
+            {
+                return new Win32.RECT()
+                {
+                    Left = currentPosition.Left - realSize.Left,
+                    Top = currentPosition.Top - realSize.Top,
+                    Right = currentPosition.Left + currentPosition.Width - realSize.Right,
+                    Bottom = currentPosition.Top + currentPosition.Height - realSize.Bottom
+                };
+            }
+
+            return new Win32.RECT();
         }
 
         private void TryStickLeft(StickContext left, ref int leftPriority)
@@ -213,17 +232,14 @@ namespace WinRun.Stickers
         private Position GetWindowPositionOrDefault(IntPtr handle)
         {
             Win32.RECT info;
-            if (Win32.GetWindowRect(handle, out info))
-            {
-                return new Position(
-                    info.Left, 
-                    info.Top, 
-                    info.Right - info.Left + Window10OffsetDecorator.WindowWidthOverlap, 
-                    info.Bottom - info.Top + Window10OffsetDecorator.WindowHeightOverlap
-                );
-            }
+            Win32.DwmGetWindowAttribute(handle, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out info, Marshal.SizeOf(typeof(Win32.RECT)));
 
-            return null;
+            return new Position(
+                info.Left,
+                info.Top,
+                info.Right - info.Left + Window10OffsetDecorator.WindowWidthOverlap,
+                info.Bottom - info.Top + Window10OffsetDecorator.WindowHeightOverlap
+            );
         }
 
         private void Log(string messageFormat, params object[] parameters)

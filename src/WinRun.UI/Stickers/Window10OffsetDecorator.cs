@@ -9,15 +9,26 @@ namespace WinRun.Stickers
     // http://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
     public class Window10OffsetDecorator : IStickPointDecorator
     {
-        public const int DesktopLeftOffset = -3;
+        //public const int DesktopLeftOffset = -3;
 
-        public const int WindowWidthOverlap = -16;
-        public const int WindowHeightOverlap = -3;
+        //public const int WindowWidthOverlap = -16;
+        //public const int WindowHeightOverlap = -3;
 
-        public const int WindowOtherLeftOverlap = -7;
+        //public const int WindowOtherLeftOverlap = -7;
 
-        public const int VerticalOffset = 4;
-        public const int HorizontalOffset = 4;
+        //public const int VerticalOffset = 4;
+        //public const int HorizontalOffset = 4;
+
+
+        public const int DesktopLeftOffset = 0;
+
+        public const int WindowWidthOverlap = 0;
+        public const int WindowHeightOverlap = 0;
+
+        public const int WindowOtherLeftOverlap = 0;
+
+        public const int VerticalOffset = 0;
+        public const int HorizontalOffset = 0;
 
         public StickPoint DecorateTop(StickPoint point)
         {
