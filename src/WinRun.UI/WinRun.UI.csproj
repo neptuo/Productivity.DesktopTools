@@ -34,7 +34,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>index.html</WebPage>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.6.0.0</ApplicationVersion>
+    <ApplicationVersion>1.6.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -124,6 +124,8 @@
       <DependentUpon>StickVisualizationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Stickers\Window10OffsetDecorator.cs" />
+    <Compile Include="TopMostWindows\PinTopMostHotkeyHandler.cs" />
+    <Compile Include="TopMostWindows\Win32.cs" />
     <Compile Include="UI\LockWorkStationHandler.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
     <Compile Include="Stickers\IStickPointProvider.cs" />
