@@ -18,6 +18,7 @@ namespace WinRun.TopMostWindows
         public void Handle(Hotkey hotkey)
         {
             IntPtr activeWindowHandle = Win32.GetForegroundWindow();
+            // http://www.pinvoke.net/default.aspx/user32.getwindowlong
             // TODO: SetWindowPos with Win32.TopMost;
         }
     }
