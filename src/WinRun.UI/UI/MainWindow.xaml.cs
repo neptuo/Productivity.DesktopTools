@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WinRun.Hotkeys;
 using WinRun.Stickers;
+using WinRun.TopMostWindows;
 using WinRun.UI.TimeMeasuring;
 using WinRun.UserWindowSizes;
 
@@ -46,6 +47,7 @@ namespace WinRun.UI
             hotkeyService.Add(new TurnMonitorOffHandler(this));
             hotkeyService.Add(new NetworkConnectionsHandler());
             hotkeyService.Add(new LockWorkStationHandler(this));
+            hotkeyService.Add(new PinTopMostHotkeyHandler());
 
             SystemSuspendHandler suspendHandler = new SystemSuspendHandler();
             hotkeyService.Add(suspendHandler.SleepHotkey, suspendHandler.Handle);

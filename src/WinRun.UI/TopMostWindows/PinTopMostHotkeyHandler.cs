@@ -12,14 +12,16 @@ namespace WinRun.TopMostWindows
     {
         public Hotkey Hotkey
         {
-            get { return new Hotkey(ModifierKeys.Windows | ModifierKeys.Shift, Key.T); }
+            get { return new Hotkey(ModifierKeys.Windows | ModifierKeys.Alt, Key.Z); }
         }
 
         public void Handle(Hotkey hotkey)
         {
-            IntPtr activeWindowHandle = Win32.GetForegroundWindow();
-            // http://www.pinvoke.net/default.aspx/user32.getwindowlong
-            // TODO: SetWindowPos with Win32.TopMost;
+            IntPtr handle = Win32.GetForegroundWindow();
+            if (Win32.IsWindowTopMost(handle))
+                Win32.SetWindowPos(handle, Win32.NoTopMost, 0, 0, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_NOMOVE);
+            else
+                Win32.SetWindowPos(handle, Win32.TopMost, 0, 0, 0, 0, Win32.SWP_NOSIZE | Win32.SWP_NOMOVE);
         }
     }
 }
