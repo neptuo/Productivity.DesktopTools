@@ -11,6 +11,20 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
 {
     public class SetSizeViewModel : ObservableObject
     {
+        private bool isCurrentMonitor;
+        public bool IsCurrentMonitor
+        {
+            get { return isCurrentMonitor; }
+            set
+            {
+                if (isCurrentMonitor != value)
+                {
+                    isCurrentMonitor = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         private string title;
         public string Title
         {
@@ -86,12 +100,13 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
         public SetSizeViewModel(string title, IWindowManager manager)
         {
             Title = title;
+            IsCurrentMonitor = true;
             ApplyCommand = new ApplyCommandImpl(this, manager);
         }
 
         public interface IWindowManager
         {
-            void Update(int left, int top, int width, int height);
+            void Update(int left, int top, int width, int height, bool isCurrentMonitor);
         }
 
         private class ApplyCommandImpl : ICommand
@@ -116,7 +131,7 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
 
             public void Execute(object parameter)
             {
-                manager.Update(viewModel.left, viewModel.Top, viewModel.width, viewModel.Height);
+                manager.Update(viewModel.left, viewModel.Top, viewModel.width, viewModel.Height, viewModel.IsCurrentMonitor);
             }
         }
     }

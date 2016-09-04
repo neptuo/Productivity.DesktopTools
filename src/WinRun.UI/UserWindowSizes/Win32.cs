@@ -27,5 +27,8 @@ namespace WinRun.UserWindowSizes
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int W, int H, uint uFlags);
+
+        [DllImport("user32.dll")]
+        public static extern int MonitorFromWindow(IntPtr hwnd, int dwFlags);
     }
 }

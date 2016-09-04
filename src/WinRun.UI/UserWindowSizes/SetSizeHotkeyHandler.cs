@@ -1,9 +1,11 @@
 ﻿using Neptuo;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using WinRun.Hotkeys;
 using WinRun.UserWindowSizes.UI;
@@ -19,7 +21,7 @@ namespace WinRun.UserWindowSizes
 
         public SetSizeHotkeyHandler()
         {
-            Hotkey = new Hotkey(ModifierKeys.Windows | ModifierKeys.Shift, Key.A);
+            Hotkey = new Hotkey(ModifierKeys.Windows | ModifierKeys.Alt, Key.A);
         }
 
         public void Handle(Hotkey hotkey)
@@ -56,9 +58,29 @@ namespace WinRun.UserWindowSizes
                 this.handle = handle;
             }
 
-            public void Update(int left, int top, int width, int height)
+            public void Update(int left, int top, int width, int height, bool isCurrentMonitor)
             {
-                Win32.SetWindowPos(handle, IntPtr.Zero, left, top, width, height, 0);
+                if (isCurrentMonitor)
+                {
+                    Win32.RECT position;
+                    if (Win32.GetWindowRect(handle, out position))
+                    {
+                        Screen screen = Screen.FromRectangle(new Rectangle(position.Left, position.Top, position.Right - position.Left, position.Bottom - position.Top));
+                        Win32.SetWindowPos(
+                            handle, 
+                            IntPtr.Zero, 
+                            left + screen.WorkingArea.Left,
+                            top + screen.WorkingArea.Top, 
+                            width, 
+                            height, 
+                            0
+                        );
+                    }
+                }
+                else
+                {
+                    Win32.SetWindowPos(handle, IntPtr.Zero, left, top, width, height, 0);
+                }
             }
         }
     }
