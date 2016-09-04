@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -60,26 +61,43 @@ namespace WinRun.UserWindowSizes
 
             public void Update(int left, int top, int width, int height, bool isCurrentMonitor)
             {
-                if (isCurrentMonitor)
+                Win32.RECT frame;
+                Win32.DwmGetWindowAttribute(handle, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out frame, Marshal.SizeOf(typeof(Win32.RECT)));
+
+                Win32.RECT position;
+                if (Win32.GetWindowRect(handle, out position))
                 {
-                    Win32.RECT position;
-                    if (Win32.GetWindowRect(handle, out position))
+                    if (isCurrentMonitor)
                     {
-                        Screen screen = Screen.FromRectangle(new Rectangle(position.Left, position.Top, position.Right - position.Left, position.Bottom - position.Top));
+                        Screen screen = Screen.FromRectangle(new Rectangle(
+                            position.Left,
+                            position.Top,
+                            position.Right - position.Left,
+                            position.Bottom - position.Top
+                        ));
+
+                        Win32.SetWindowPos(
+                            handle,
+                            IntPtr.Zero,
+                            left + screen.WorkingArea.Left + (position.Left - frame.Left),
+                            top + screen.WorkingArea.Top + (position.Top - frame.Top),
+                            width,
+                            height,
+                            0
+                        );
+                    }
+                    else
+                    {
                         Win32.SetWindowPos(
                             handle, 
                             IntPtr.Zero, 
-                            left + screen.WorkingArea.Left,
-                            top + screen.WorkingArea.Top, 
+                            left + (position.Left - frame.Left),
+                            top + (position.Top - frame.Top), 
                             width, 
                             height, 
                             0
                         );
                     }
-                }
-                else
-                {
-                    Win32.SetWindowPos(handle, IntPtr.Zero, left, top, width, height, 0);
                 }
             }
         }
