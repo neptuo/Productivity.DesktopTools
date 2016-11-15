@@ -9,24 +9,41 @@ namespace Neptuo.Productivity.DevTools.ViewModels
 {
     public class MainSettingsViewModel : ObservableObject
     {
-        private int size;
-        public int Size
+        public BorderViewModel MainBorder { get; private set; }
+        public BorderViewModel CommandBorder { get; private set; }
+
+        private VerticalOrientation vertical;
+        public VerticalOrientation Vertical
         {
-            get { return size; }
+            get { return vertical; }
             set
             {
-                if (size != value)
+                if (vertical != value)
                 {
-                    size = value;
+                    vertical = value;
                     RaisePropertyChanged();
-                    RaisePropertyChanged(nameof(CorderRadius));
                 }
             }
         }
 
-        public int CorderRadius
+        private HorizontalOrientation horizontal;
+        public HorizontalOrientation Horizontal
         {
-            get { return Size / 2; }
+            get { return horizontal; }
+            set
+            {
+                if (horizontal != value)
+                {
+                    horizontal = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public MainSettingsViewModel()
+        {
+            MainBorder = new BorderViewModel();
+            CommandBorder = new BorderViewModel();
         }
     }
 }

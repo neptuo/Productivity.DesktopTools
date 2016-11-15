@@ -68,6 +68,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Views\Converters\HorizontalAlignmentConverter.cs" />
+    <Compile Include="Views\Converters\HorizontalDockConverter.cs" />
+    <Compile Include="Views\Converters\VerticalDockConverter.cs" />
+    <Compile Include="WpfScreen.cs" />
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,11 +100,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HorizontalOrientation.cs" />
+    <Compile Include="VerticalOrientation.cs" />
+    <Compile Include="ViewModels\BorderViewModel.cs" />
+    <Compile Include="ViewModels\CommandViewModel.cs" />
     <Compile Include="ViewModels\MainSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\Controls\WindowDrag.cs" />
     <Compile Include="Views\Converters\BoolConverter.cs" />
     <Compile Include="Views\Converters\CuttingConverter.cs" />
+    <Compile Include="Views\DesignData\Command.cs" />
     <Compile Include="Views\DesignData\ViewModelLocator.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

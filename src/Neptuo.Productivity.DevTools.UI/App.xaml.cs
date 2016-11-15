@@ -21,8 +21,9 @@ namespace Neptuo.Productivity.DevTools
         {
             base.OnStartup(e);
 
-            MainViewModel viewModel = new MainViewModel();
-            viewModel.Settings.Size = 50;
+            //MainViewModel viewModel = new MainViewModel();
+            //viewModel.Settings.Size = 50;
+            MainViewModel viewModel = new Views.DesignData.ViewModelLocator().Main;
 
             MainWindow view = new MainWindow();
             view.ViewModel = viewModel;

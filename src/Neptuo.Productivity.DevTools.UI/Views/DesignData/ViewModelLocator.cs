@@ -1,4 +1,5 @@
-﻿using Neptuo.Productivity.DevTools.ViewModels;
+﻿using FontAwesome.WPF;
+using Neptuo.Productivity.DevTools.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,12 @@ namespace Neptuo.Productivity.DevTools.Views.DesignData
                 {
                     main = new MainViewModel();
                     main.IsExpanded = true;
-                    main.Settings.Size = 60;
+                    //main.Settings.Horizontal = HorizontalOrientation.Right;
+                    main.Settings.MainBorder.Size = 60;
+                    main.Settings.CommandBorder.Size = 40;
+
+                    main.Commands.Add(new CommandViewModel(FontAwesomeIcon.Cog, "Application settings", new Command()));
+                    main.Commands.Add(new CommandViewModel(FontAwesomeIcon.AlignLeft, "Log", new Command()));
                 }
 
                 return main;

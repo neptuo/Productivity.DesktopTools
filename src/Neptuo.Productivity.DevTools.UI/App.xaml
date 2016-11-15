@@ -10,12 +10,14 @@
         <dd:ViewModelLocator x:Key="ViewModelLocator" />
 
         <SolidColorBrush x:Key="BackgroundBrush">#1E1E1E</SolidColorBrush>
+        <SolidColorBrush x:Key="ForegroundBrush">White</SolidColorBrush>
         <SolidColorBrush x:Key="TextBoxBackgroundBrush">#3F3F46</SolidColorBrush>
         <SolidColorBrush x:Key="InactiveBrush">#3F3F46</SolidColorBrush>
         <SolidColorBrush x:Key="ActiveBrush">#3683D3</SolidColorBrush>
         <SolidColorBrush x:Key="TextBoxInactiveBrush">#ABADB3</SolidColorBrush>
 
         <converters:CuttingConverter x:Key="ZeroOrLowerToVisibleConverter" EdgeValue="0" GreaterValue="Collapsed" LowerValue="Visible" EqualValue="Visible" />
+        <converters:BoolConverter x:Key="TrueToVisibleConverter" TrueValue="Visible" FalseValue="Collapsed" />
         <converters:BoolConverter x:Key="ActiveBorderConverter" TrueValue="{StaticResource ActiveBrush}" FalseValue="{StaticResource InactiveBrush}" />
 
         <Style x:Key="WindowStyle" TargetType="Window">
@@ -43,12 +45,12 @@
         <Style x:Key="WindowBorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="0,10" />
+            <Setter Property="Padding" Value="10" />
             <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
         </Style>
 
         <Style TargetType="fa:ImageAwesome">
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         </Style>
 
         <!-- EditForm -->
