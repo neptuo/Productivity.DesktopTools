@@ -13,6 +13,7 @@
         PreviewMouseDown="OnPreviewMouseDown" PreviewKeyDown="OnPreviewKeyDown" SizeChanged="OnSizeChanged">
     <Window.Resources>
         <converters:VerticalDockConverter x:Key="VerticalDockConverter" />
+        <converters:VerticalCommandMarginConverter x:Key="VerticalCommandMarginConverter" />
         <converters:HorizontalDockConverter x:Key="HorizontalDockConverter" />
         <converters:HorizontalDockConverter x:Key="HorizontalDockInvertedConverter" IsInverted="True" />
         <converters:HorizontalAlignmentConverter x:Key="HorizontalAlignmentConverter" />
@@ -22,6 +23,7 @@
             <Setter Property="Background" Value="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
         </Style>
         <Style x:Key="CommandTextBorderStyle" TargetType="Border" BasedOn="{StaticResource WindowBorderStyle}">
             <Setter Property="Padding" Value="4" />
@@ -48,7 +50,7 @@
         <ItemsControl ItemsSource="{Binding Commands}" Visibility="{Binding IsExpanded, Converter={StaticResource TrueToVisibleConverter}}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel Margin="10,10,10,10" HorizontalAlignment="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalAlignmentConverter}}">
+                    <DockPanel Margin="{Binding DataContext.Settings.Vertical, ElementName=this, Converter={StaticResource VerticalCommandMarginConverter}}" HorizontalAlignment="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalAlignmentConverter}}">
                         <Border Style="{StaticResource CommandTextBorderStyle}" DockPanel.Dock="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalDockInvertedConverter}}">
                             <TextBlock Text="{Binding Text}" Style="{StaticResource CommandTextStyle}" />
                         </Border>
