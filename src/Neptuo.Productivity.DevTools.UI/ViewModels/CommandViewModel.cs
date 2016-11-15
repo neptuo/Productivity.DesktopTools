@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using Neptuo;
 using Neptuo.Observables;
+using Neptuo.Productivity.DevTools.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Neptuo.Productivity.DevTools.ViewModels
 {
-    public class CommandViewModel : ObservableObject
+    public class CommandViewModel : ObservableObject, ICommandModel
     {
         private FontAwesomeIcon icon;
         public FontAwesomeIcon Icon
@@ -41,6 +42,20 @@ namespace Neptuo.Productivity.DevTools.ViewModels
         }
 
         public ICommand Command { get; private set; }
+
+        private string description;
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                if (description != value)
+                {
+                    description = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
         public CommandViewModel(FontAwesomeIcon icon, ICommand command)
         {

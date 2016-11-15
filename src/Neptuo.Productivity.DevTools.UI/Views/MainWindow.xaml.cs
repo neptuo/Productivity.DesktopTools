@@ -26,7 +26,7 @@ namespace Neptuo.Productivity.DevTools.Views
     {
         public DispatcherHelper DispatcherHelper { get; private set; }
 
-        public MainViewModel ViewModel
+        internal MainViewModel ViewModel
         {
             get { return (MainViewModel)DataContext; }
             set { DataContext = value; }

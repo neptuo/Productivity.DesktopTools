@@ -1,4 +1,6 @@
-﻿using Neptuo.Productivity.DevTools.ViewModels;
+﻿using Neptuo.Activators;
+using Neptuo.Productivity.DevTools.Commands;
+using Neptuo.Productivity.DevTools.ViewModels;
 using Neptuo.Productivity.DevTools.Views;
 using System;
 using System.Collections.Generic;
@@ -21,9 +23,11 @@ namespace Neptuo.Productivity.DevTools
         {
             base.OnStartup(e);
 
-            //MainViewModel viewModel = new MainViewModel();
-            //viewModel.Settings.Size = 50;
+            IDependencyContainer dependencyContainer = new UnityDependencyContainer();
+
             MainViewModel viewModel = new Views.DesignData.ViewModelLocator().Main;
+            dependencyContainer.Definitions
+                .AddScoped<ICommandCollection>(dependencyContainer.ScopeName, viewModel.Commands);
 
             MainWindow view = new MainWindow();
             view.ViewModel = viewModel;

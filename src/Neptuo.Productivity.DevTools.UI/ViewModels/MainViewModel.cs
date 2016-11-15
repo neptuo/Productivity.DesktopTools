@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Neptuo.Productivity.DevTools.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    internal class MainViewModel : ObservableObject
     {
         public MainSettingsViewModel Settings { get; private set; }
-        public ObservableCollection<CommandViewModel> Commands { get; private set; }
+        public CommandObservableCollection Commands { get; private set; }
 
         private bool isExpanded;
         public bool IsExpanded
@@ -30,7 +30,7 @@ namespace Neptuo.Productivity.DevTools.ViewModels
         public MainViewModel()
         {
             Settings = new MainSettingsViewModel();
-            Commands = new ObservableCollection<CommandViewModel>();
+            Commands = new CommandObservableCollection();
         }
     }
 }
