@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Neptuo.Productivity.DevTools.Views"
-        mc:Ignorable="d"
+        mc:Ignorable="d" d:DataContext="{Binding Configuration, Source={StaticResource ViewModelLocator}}"
         Style="{StaticResource WindowStyle}"
         Title="DevTools :: Configuration" MinHeight="400" MinWidth="600"
-        PreviewKeyUp="OnPreviewKeyUp">
+        PreviewMouseDown="OnPreviewMouseDown" PreviewKeyUp="OnPreviewKeyUp">
     <Window.Resources>
         <Style TargetType="TabControl">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -87,6 +87,8 @@
             </Setter>
         </Style>
 
+        <Style TargetType="TextBlock" BasedOn="{StaticResource GrayStyle}">
+        </Style>
         <Style x:Key="TitleStyle" TargetType="TextBlock">
             <Setter Property="Background" Value="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
             <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
@@ -99,7 +101,12 @@
             <TextBlock Text="DevTools :: Configuration" Style="{StaticResource TitleStyle}" />
             <TabControl>
                 <TabItem Header="Configuration">
-                    <CheckBox Content="Start when logged in" />
+                    <StackPanel>
+                        <StackPanel Style="{StaticResource EditorPanelStyle}">
+                            <Label Content="Others:" />
+                            <CheckBox Content="Start when logged in" IsChecked="{Binding IsAutoStartup}" />
+                        </StackPanel>
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="Commands">
                     <TextBlock Text="Commands" />

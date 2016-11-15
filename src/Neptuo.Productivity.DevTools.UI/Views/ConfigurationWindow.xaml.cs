@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Neptuo.Productivity.DevTools.ViewModels;
+using Neptuo.Productivity.DevTools.Views.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,21 @@ namespace Neptuo.Productivity.DevTools.Views
     /// </summary>
     public partial class ConfigurationWindow : Window
     {
+        internal ConfigurationViewModel ViewModel
+        {
+            get { return (ConfigurationViewModel)DataContext; }
+            set { DataContext = value; }
+        }
+
         public ConfigurationWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (WindowDrag.TryMove(e))
+                DragMove();
         }
 
         private void OnPreviewKeyUp(object sender, KeyEventArgs e)

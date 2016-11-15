@@ -1,4 +1,5 @@
-﻿using Neptuo.Productivity.DevTools.Views;
+﻿using Neptuo.Productivity.DevTools.Services.StartupShortcuts;
+using Neptuo.Productivity.DevTools.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,11 @@ namespace Neptuo.Productivity.DevTools.ViewModels.Commands
 
         public void Execute(object parameter)
         {
+            ConfigurationViewModel viewModel = new ConfigurationViewModel(new ShortcutService("Neptuo", "Productivity", "DevTools"));
+
             ConfigurationWindow window = new ConfigurationWindow();
+            window.ViewModel = viewModel;
+
             window.Show();
         }
     }
