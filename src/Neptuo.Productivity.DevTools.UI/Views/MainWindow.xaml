@@ -1,0 +1,18 @@
+﻿<Window x:Class="Neptuo.Productivity.DevTools.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:views="clr-namespace:Neptuo.Productivity.DevTools.Views"
+        mc:Ignorable="d" d:DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}"
+        Style="{StaticResource WindowStyle}" 
+        PreviewMouseDown="OnPreviewMouseDown" PreviewKeyDown="OnPreviewKeyDown">
+    <Border Style="{StaticResource WindowBorderStyle}" Padding="10" CornerRadius="{Binding Settings.CorderRadius}" Width="{Binding Settings.Size}" Height="{Binding Settings.Size}">
+        <Grid>
+            <ToggleButton Style="{StaticResource PlainToggleButtonStyle}" IsChecked="{Binding IsExpanded}">
+                <fa:ImageAwesome Icon="Code" />
+            </ToggleButton>
+        </Grid>
+    </Border>
+</Window>
