@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Neptuo.Productivity.DevTools.Views"
         mc:Ignorable="d"
         Style="{StaticResource WindowStyle}"
-        Title="DevTools :: Configuration" MinHeight="300" MinWidth="300"
+        Title="DevTools :: Configuration" MinHeight="400" MinWidth="600"
         PreviewKeyUp="OnPreviewKeyUp">
     <Window.Resources>
         <Style TargetType="TabControl">
@@ -20,7 +20,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            
+
                             <TabPanel x:Name="HeaderPanel"
                              Grid.Row="0"
                              Panel.ZIndex="1"
@@ -28,7 +28,7 @@
                              IsItemsHost="True"
                              KeyboardNavigation.TabIndex="1"
                              Background="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
-                            
+
                             <Border x:Name="Border"
                              Grid.Row="1"
                              BorderThickness="1"
@@ -72,8 +72,8 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>-->
-                            <Border x:Name="Border" Margin="10,20,0,0" CornerRadius="2,2,0,0">
-                                <TextBlock x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Header}" Foreground="{StaticResource ForegroundBrush}" Margin="12,6" />
+                            <Border x:Name="Border" Margin="0,5,0,0">
+                                <TextBlock x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Header}" Foreground="{StaticResource ForegroundBrush}" Margin="10,4" />
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -86,15 +86,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="TitleStyle" TargetType="TextBlock">
+            <Setter Property="Background" Value="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+            <Setter Property="DockPanel.Dock" Value="Top" />
+            <Setter Property="Padding" Value="10,4" />
+        </Style>
     </Window.Resources>
     <Border Style="{StaticResource WindowBorderStyle}" Padding="0">
-        <TabControl>
-            <TabItem Header="Configuration">
-                <TextBlock Text="Configuration" />
-            </TabItem>
-            <TabItem Header="Commands">
-                <TextBlock Text="Commands" />
-            </TabItem>
-        </TabControl>
+        <DockPanel>
+            <TextBlock Text="DevTools :: Configuration" Style="{StaticResource TitleStyle}" />
+            <TabControl>
+                <TabItem Header="Configuration">
+                    <CheckBox Content="Start when logged in" />
+                </TabItem>
+                <TabItem Header="Commands">
+                    <TextBlock Text="Commands" />
+                </TabItem>
+            </TabControl>
+        </DockPanel>
     </Border>
 </Window>
