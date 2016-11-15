@@ -9,7 +9,7 @@
         xmlns:views="clr-namespace:Neptuo.Productivity.DevTools.Views"
         xmlns:vm="clr-namespace:Neptuo.Productivity.DevTools.ViewModels"
         mc:Ignorable="d" d:DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}"
-        Style="{StaticResource WindowStyle}"
+        Style="{StaticResource WindowStyle}" Topmost="True"
         PreviewMouseDown="OnPreviewMouseDown" PreviewKeyDown="OnPreviewKeyDown" SizeChanged="OnSizeChanged">
     <Window.Resources>
         <converters:VerticalDockConverter x:Key="VerticalDockConverter" />

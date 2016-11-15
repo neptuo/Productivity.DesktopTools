@@ -1,6 +1,8 @@
-﻿using Neptuo.Activators;
+﻿using FontAwesome.WPF;
+using Neptuo.Activators;
 using Neptuo.Productivity.DevTools.Commands;
 using Neptuo.Productivity.DevTools.ViewModels;
+using Neptuo.Productivity.DevTools.ViewModels.Commands;
 using Neptuo.Productivity.DevTools.Views;
 using System;
 using System.Collections.Generic;
@@ -25,13 +27,24 @@ namespace Neptuo.Productivity.DevTools
 
             IDependencyContainer dependencyContainer = new UnityDependencyContainer();
 
-            MainViewModel viewModel = new Views.DesignData.ViewModelLocator().Main;
+            MainViewModel viewModel = new MainViewModel();
+            viewModel.Settings.MainBorder.Size = 60;
+            viewModel.Settings.CommandBorder.Size = 40;
+
             dependencyContainer.Definitions
                 .AddScoped<ICommandCollection>(dependencyContainer.ScopeName, viewModel.Commands);
+
+            RegisterCommands(dependencyContainer, viewModel.Commands);
 
             MainWindow view = new MainWindow();
             view.ViewModel = viewModel;
             view.Show();
+        }
+
+        private void RegisterCommands(IDependencyContainer dependencyContainer, ICommandCollection commands)
+        {
+            commands
+                .Add(new CommandViewModel(FontAwesomeIcon.Cog, "Configuration", new OpenConfigurationCommand()));
         }
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

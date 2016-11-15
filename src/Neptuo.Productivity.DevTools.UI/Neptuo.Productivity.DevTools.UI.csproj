@@ -105,11 +105,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\CommandObservableCollection.cs" />
+    <Compile Include="ViewModels\Commands\OpenConfigurationCommand.cs" />
+    <Compile Include="Views\ConfigurationWindow.xaml.cs">
+      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Converters\HorizontalAlignmentConverter.cs" />
     <Compile Include="Views\Converters\HorizontalDockConverter.cs" />
     <Compile Include="Views\Converters\VerticalCommandMarginConverter.cs" />
     <Compile Include="Views\Converters\VerticalDockConverter.cs" />
     <Compile Include="WpfScreen.cs" />
+    <Page Include="Views\ConfigurationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
