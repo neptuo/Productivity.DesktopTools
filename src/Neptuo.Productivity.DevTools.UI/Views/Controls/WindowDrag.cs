@@ -22,7 +22,8 @@ namespace Neptuo.Productivity.DevTools.Views.Controls
             typeof(TextBox), 
             typeof(ComboBox), 
             typeof(CheckBox), 
-            typeof(ComboBoxItem) 
+            typeof(ComboBoxItem),
+            typeof(TabItem)
         };
 
         public static bool TryMove(MouseButtonEventArgs e)
