@@ -17,7 +17,7 @@
         <SolidColorBrush x:Key="TextBoxInactiveBrush">#ABADB3</SolidColorBrush>
 
         <converters:CuttingConverter x:Key="ZeroOrLowerToVisibleConverter" EdgeValue="0" GreaterValue="Collapsed" LowerValue="Visible" EqualValue="Visible" />
-        <converters:BoolConverter x:Key="TrueToVisibleConverter" TrueValue="Visible" FalseValue="Collapsed" />
+        <converters:BoolConverter x:Key="TrueToVisibleFalseToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
         <converters:BoolConverter x:Key="ActiveBorderConverter" TrueValue="{StaticResource ActiveBrush}" FalseValue="{StaticResource InactiveBrush}" />
 
         <Style x:Key="WindowStyle" TargetType="Window">

@@ -76,7 +76,12 @@ namespace Neptuo.Productivity.DevTools.Views
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
-                Close();
+            {
+                if (ViewModel.IsExpanded)
+                    ViewModel.IsExpanded = false;
+                else
+                    Close();
+            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)

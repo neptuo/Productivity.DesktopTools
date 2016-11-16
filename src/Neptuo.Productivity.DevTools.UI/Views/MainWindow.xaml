@@ -26,17 +26,30 @@
             <Setter Property="BorderBrush" Value="{Binding IsActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Converter={StaticResource ActiveBorderConverter}}" />
         </Style>
         <Style x:Key="CommandTextBorderStyle" TargetType="Border" BasedOn="{StaticResource WindowBorderStyle}">
+            <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" />
             <Setter Property="Padding" Value="4" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Margin" Value="-7,0" />
         </Style>
         <Style x:Key="CommandIconBorderStyle" TargetType="Border" BasedOn="{StaticResource WindowBorderStyle}">
+            <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" />
         </Style>
         <Style x:Key="CommandTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5,0" />
+        </Style>
+        <Style x:Key="CoommandButtonStyle" TargetType="Button" BasedOn="{StaticResource PlainButtonStyle}">
+            <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource InactiveBrush}" />
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ActiveBrush}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -47,20 +60,20 @@
                 <fa:ImageAwesome Icon="Code" />
             </ToggleButton>
         </Border>
-        <ItemsControl ItemsSource="{Binding Commands}" Visibility="{Binding IsExpanded, Converter={StaticResource TrueToVisibleConverter}}">
+        <ItemsControl ItemsSource="{Binding Commands}" Visibility="{Binding IsExpanded, Converter={StaticResource TrueToVisibleFalseToHiddenConverter}}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel Margin="{Binding DataContext.Settings.Vertical, ElementName=this, Converter={StaticResource VerticalCommandMarginConverter}}" HorizontalAlignment="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalAlignmentConverter}}">
-                        <Border Style="{StaticResource CommandTextBorderStyle}" DockPanel.Dock="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalDockInvertedConverter}}">
-                            <TextBlock Text="{Binding Text}" Style="{StaticResource CommandTextStyle}" />
-                        </Border>
-                        <Border Style="{StaticResource WindowBorderStyle}" 
-                         CornerRadius="{Binding DataContext.Settings.CommandBorder.CorderRadius, ElementName=this}" Width="{Binding DataContext.Settings.CommandBorder.Size, ElementName=this}" Height="{Binding DataContext.Settings.CommandBorder.Size, ElementName=this}">
-                            <Button Style="{StaticResource PlainButtonStyle}" Command="{Binding Command}">
+                    <Button Style="{StaticResource CoommandButtonStyle}" Command="{Binding Command}">
+                        <DockPanel Margin="{Binding DataContext.Settings.Vertical, ElementName=this, Converter={StaticResource VerticalCommandMarginConverter}}" HorizontalAlignment="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalAlignmentConverter}}">
+                            <Border Style="{StaticResource CommandTextBorderStyle}" DockPanel.Dock="{Binding DataContext.Settings.Horizontal, ElementName=this, Converter={StaticResource HorizontalDockInvertedConverter}}">
+                                <TextBlock Text="{Binding Text}" Style="{StaticResource CommandTextStyle}" />
+                            </Border>
+                            <Border Style="{StaticResource CommandIconBorderStyle}"
+                             CornerRadius="{Binding DataContext.Settings.CommandBorder.CorderRadius, ElementName=this}" Width="{Binding DataContext.Settings.CommandBorder.Size, ElementName=this}" Height="{Binding DataContext.Settings.CommandBorder.Size, ElementName=this}">
                                 <fa:ImageAwesome Icon="{Binding Icon}" />
-                            </Button>
-                        </Border>
-                    </DockPanel>
+                            </Border>
+                        </DockPanel>
+                    </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
