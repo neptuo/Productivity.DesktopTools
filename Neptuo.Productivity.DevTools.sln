@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neptuo.Productivity.DevTools", "src\Neptuo.Productivity.DevTools\Neptuo.Productivity.DevTools.csproj", "{87D55A42-C942-43A3-AF89-5FFE693D27D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neptuo.Productivity.DevTools.v1", "src\Neptuo.Productivity.DevTools.v1\Neptuo.Productivity.DevTools.v1.csproj", "{87D55A42-C942-43A3-AF89-5FFE693D27D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neptuo.Productivity.DevTools.UI", "src\Neptuo.Productivity.DevTools.UI\Neptuo.Productivity.DevTools.UI.csproj", "{0A0B1BE3-6D22-405A-A0C7-31ACC28643D7}"
 EndProject

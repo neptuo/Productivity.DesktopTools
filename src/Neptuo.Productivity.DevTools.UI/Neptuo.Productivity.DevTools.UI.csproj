@@ -186,9 +186,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Neptuo.Productivity.DevTools\Neptuo.Productivity.DevTools.csproj">
+    <ProjectReference Include="..\Neptuo.Productivity.DevTools.v1\Neptuo.Productivity.DevTools.v1.csproj">
       <Project>{87d55a42-c942-43a3-af89-5ffe693d27d3}</Project>
-      <Name>Neptuo.Productivity.DevTools</Name>
+      <Name>Neptuo.Productivity.DevTools.v1</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

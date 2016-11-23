@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Neptuo.Productivity.DevTools</RootNamespace>
-    <AssemblyName>Neptuo.Productivity.DevTools</AssemblyName>
+    <AssemblyName>Neptuo.Productivity.DevTools.v1</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
