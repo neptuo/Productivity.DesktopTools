@@ -13,12 +13,6 @@ namespace Neptuo.Productivity.DevTools.ViewModels
 {
     internal class CommandObservableCollection : ObservableCollection<ICommandModel>, ICommandCollection
     {
-        ICommandCollection ICommandCollection.Add(FontAwesomeIcon icon, string text, ICommand command, string description)
-        {
-            Add(new CommandViewModel(icon, text, command) { Description = description });
-            return this;
-        }
-
         IEnumerable<ICommandModel> ICommandCollection.Enumerate()
         {
             return this;
