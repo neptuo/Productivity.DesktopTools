@@ -4,18 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
-namespace Neptuo.Productivity.DevTools.Commands
+namespace Neptuo.Productivity.DevTools
 {
     /// <summary>
-    /// A model describing command.
+    /// A component with icon.
     /// </summary>
-    public interface ICommandModel
+    public interface IFontIconModel
     {
         /// <summary>
-        /// Gets the function to execute.
+        /// Gets the icon of component.
         /// </summary>
-        ICommand Command { get; }
+        FontAwesomeIcon Icon { get; }
     }
 }

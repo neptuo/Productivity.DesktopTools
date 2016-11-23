@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Commands\ICommandCollection.cs" />
     <Compile Include="Commands\ICommandModel.cs" />
+    <Compile Include="IFontIconModel.cs" />
+    <Compile Include="ITextModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

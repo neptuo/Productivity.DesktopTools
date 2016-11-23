@@ -16,16 +16,6 @@ namespace Neptuo.Productivity.DevTools.Commands
         /// <summary>
         /// Registers a new command.
         /// </summary>
-        /// <param name="icon">The icon for command.</param>
-        /// <param name="text">The additional command label.</param>
-        /// <param name="command">The function to execute.</param>
-        /// <param name="description">The additional command description.</param>
-        /// <returns>Self (for fluency).</returns>
-        ICommandCollection Add(FontAwesomeIcon icon, string text, ICommand command, string description);
-
-        /// <summary>
-        /// Registers a new command.
-        /// </summary>
         /// <param name="command">The command to register.</param>
         /// <returns>Self (for fluency).</returns>
         ICommandCollection Add(ICommandModel command);
