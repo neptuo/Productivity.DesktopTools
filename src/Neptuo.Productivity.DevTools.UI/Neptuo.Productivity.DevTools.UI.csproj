@@ -107,7 +107,9 @@
     <Compile Include="Services\StartupShortcuts\ShortcutService.cs" />
     <Compile Include="ViewModels\CommandObservableCollection.cs" />
     <Compile Include="ViewModels\Commands\OpenConfigurationCommand.cs" />
+    <Compile Include="ViewModels\Commands\TryWriteToLogCommand.cs" />
     <Compile Include="ViewModels\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="Views\ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>

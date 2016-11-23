@@ -1,5 +1,6 @@
 ﻿using FontAwesome.WPF;
 using Neptuo.Activators;
+using Neptuo.Logging;
 using Neptuo.Productivity.DevTools.Commands;
 using Neptuo.Productivity.DevTools.ViewModels;
 using Neptuo.Productivity.DevTools.ViewModels.Commands;
@@ -31,8 +32,12 @@ namespace Neptuo.Productivity.DevTools
             viewModel.Settings.MainBorder.Size = 60;
             viewModel.Settings.CommandBorder.Size = 40;
 
+            DefaultLogFactory logFactory = new DefaultLogFactory("root");
+            logFactory.AddSerializer(viewModel.Message);
+
             dependencyContainer.Definitions
-                .AddScoped<ICommandCollection>(dependencyContainer.ScopeName, viewModel.Commands);
+                .AddScoped<ICommandCollection>(dependencyContainer.ScopeName, viewModel.Commands)
+                .AddScoped<ILogFactory>(dependencyContainer.ScopeName, logFactory);
 
             RegisterCommands(dependencyContainer, viewModel.Commands);
 
@@ -44,7 +49,8 @@ namespace Neptuo.Productivity.DevTools
         private void RegisterCommands(IDependencyContainer dependencyContainer, ICommandCollection commands)
         {
             commands
-                .Add(new CommandViewModel(FontAwesomeIcon.Cog, "Configuration", new OpenConfigurationCommand()));
+                .Add(new CommandViewModel(FontAwesomeIcon.Cog, "Configuration", new OpenConfigurationCommand()))
+                .Add(new CommandViewModel(FontAwesomeIcon.Try, "Try write to log", new TryWriteToLogCommand(dependencyContainer.Resolve<ILogFactory>())));
         }
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

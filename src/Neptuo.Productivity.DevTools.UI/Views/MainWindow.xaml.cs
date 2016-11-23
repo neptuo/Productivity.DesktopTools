@@ -124,14 +124,5 @@ namespace Neptuo.Productivity.DevTools.Views
                     Close();
             }
         }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (ViewModel.Settings.Vertical == VerticalOrientation.Bottom && e.HeightChanged)
-                Top -= e.NewSize.Height - e.PreviousSize.Height;
-
-            if (ViewModel.Settings.Horizontal == HorizontalOrientation.Right && e.WidthChanged)
-                Left -= e.NewSize.Width - e.PreviousSize.Width;
-        }
     }
 }
