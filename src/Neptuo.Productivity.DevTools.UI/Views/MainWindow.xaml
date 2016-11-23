@@ -53,7 +53,7 @@
         </Style>
     </Window.Resources>
     <DockPanel>
-        <Border Style="{StaticResource MainWindowBorderStyle}" BorderThickness="0" 
+        <Border x:Name="brdMainButton" Style="{StaticResource MainWindowBorderStyle}" BorderThickness="0" 
          HorizontalAlignment="{Binding Settings.Horizontal, Converter={StaticResource HorizontalAlignmentConverter}}" DockPanel.Dock="{Binding Settings.Vertical, Converter={StaticResource VerticalDockConverter}}"
          CornerRadius="{Binding Settings.MainBorder.CorderRadius}" Width="{Binding Settings.MainBorder.Size}" Height="{Binding Settings.MainBorder.Size}">
             <ToggleButton Style="{StaticResource PlainToggleButtonStyle}" IsChecked="{Binding IsExpanded}">

@@ -29,7 +29,11 @@ namespace Neptuo.Productivity.DevTools.Views
         internal MainViewModel ViewModel
         {
             get { return (MainViewModel)DataContext; }
-            set { DataContext = value; }
+            set
+            {
+                DataContext = value;
+                OnViewModelChanged(value);
+            }
         }
 
         public MainWindow()
@@ -52,6 +56,43 @@ namespace Neptuo.Productivity.DevTools.Views
 
                 ViewModel.Settings.Vertical = GetVerticalOrientation();
                 ViewModel.Settings.Horizontal = GetHorizontalOrientation();
+            }
+        }
+
+        private void OnViewModelChanged(MainViewModel viewModel)
+        {
+            viewModel.Settings.PropertyChanged += OnViewModelSettingsChanged;
+        }
+
+        private async void OnViewModelSettingsChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainSettingsViewModel.Horizontal))
+            {
+                await Task.Delay(10);
+                double diff = ActualWidth - brdMainButton.ActualWidth - 7;
+                switch (ViewModel.Settings.Horizontal)
+                {
+                    case HorizontalOrientation.Left:
+                        Left += diff;
+                        break;
+                    case HorizontalOrientation.Right:
+                        Left -= diff;
+                        break;
+                }
+            }
+            else if(e.PropertyName == nameof(MainSettingsViewModel.Vertical))
+            {
+                await Task.Delay(10);
+                double diff = ActualHeight - brdMainButton.ActualHeight + 5;
+                switch (ViewModel.Settings.Vertical)
+                {
+                    case VerticalOrientation.Top:
+                        Top += diff;
+                        break;
+                    case VerticalOrientation.Bottom:
+                        Top -= diff;
+                        break;
+                }
             }
         }
 
