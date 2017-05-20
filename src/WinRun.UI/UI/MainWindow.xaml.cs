@@ -32,6 +32,8 @@ namespace WinRun.UI
         private StickService stickService;
         private HotkeyService hotkeyService;
 
+        public ClockHandler ClockHandler { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,9 +55,9 @@ namespace WinRun.UI
             hotkeyService.Add(suspendHandler.SleepHotkey, suspendHandler.Handle);
             hotkeyService.Add(suspendHandler.HibernateHotkey, suspendHandler.Handle);
 
-            ClockHandler clockHandler = new ClockHandler();
-            hotkeyService.Add(clockHandler.LargeHotkey, clockHandler.Handle);
-            hotkeyService.Add(clockHandler.MediumHotkey, clockHandler.Handle);
+            ClockHandler = new ClockHandler();
+            hotkeyService.Add(ClockHandler.LargeHotkey, ClockHandler.Handle);
+            hotkeyService.Add(ClockHandler.MediumHotkey, ClockHandler.Handle);
 
             // http://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
             stickService = new StickService(Dispatcher);

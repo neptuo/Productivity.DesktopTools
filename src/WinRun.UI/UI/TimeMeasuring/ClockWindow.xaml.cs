@@ -58,9 +58,13 @@ namespace WinRun.UI.TimeMeasuring
             if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
             {
                 EmptyWindow wnd = new EmptyWindow();
+                wnd.Width = 10;
+                wnd.Height = 10;
+                wnd.Left = -100;
+                wnd.Top = -100;
                 wnd.Show();
                 virtualDesktopManager.MoveWindowToDesktop(
-                    handle, 
+                    handle,
                     virtualDesktopManager.GetWindowDesktopId(new WindowInteropHelper(wnd).Handle)
                 );
                 wnd.Close();

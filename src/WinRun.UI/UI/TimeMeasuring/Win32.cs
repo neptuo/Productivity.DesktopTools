@@ -101,9 +101,8 @@ namespace WinRun.UI.TimeMeasuring
             int result;
             int hr;
             if ((hr = manager.IsWindowOnCurrentVirtualDesktop(TopLevelWindow, out result)) != 0)
-            {
-                Marshal.ThrowExceptionForHR(hr);
-            }
+                return false;
+
             return result != 0;
         }
 
