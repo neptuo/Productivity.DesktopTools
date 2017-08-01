@@ -43,8 +43,9 @@ namespace WinRun.UI
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            trayIcon.Visible = false;
-            trayIcon.Dispose();
+            trayIcon.BalloonTipTitle = "Exception occured";
+            trayIcon.BalloonTipText = e.ToString();
+            trayIcon.ShowBalloonTip(5 * 1000);
         }
 
         protected override void OnExit(ExitEventArgs e)
