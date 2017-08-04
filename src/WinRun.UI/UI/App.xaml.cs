@@ -43,6 +43,8 @@ namespace WinRun.UI
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            e.Handled = true;
+
             trayIcon.BalloonTipTitle = "Exception occured";
             trayIcon.BalloonTipText = e.ToString();
             trayIcon.ShowBalloonTip(5 * 1000);
