@@ -55,21 +55,27 @@ namespace WinRun.UI.TimeMeasuring
 
         private void EnsureCurrentVirtualDesktop()
         {
-            if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
+            try
             {
-                EmptyWindow wnd = new EmptyWindow();
-                wnd.Width = 10;
-                wnd.Height = 10;
-                wnd.Left = -100;
-                wnd.Top = -100;
-                wnd.Show();
-                virtualDesktopManager.MoveWindowToDesktop(
-                    handle,
-                    virtualDesktopManager.GetWindowDesktopId(new WindowInteropHelper(wnd).Handle)
-                );
-                wnd.Close();
-                wnd = null;
+                if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
+                {
+                    EmptyWindow wnd = new EmptyWindow();
+                    wnd.Width = 10;
+                    wnd.Height = 10;
+                    wnd.Left = -100;
+                    wnd.Top = -100;
+                    wnd.ShowInTaskbar = false;
+                    wnd.Show();
+                    virtualDesktopManager.MoveWindowToDesktop(
+                        handle,
+                        virtualDesktopManager.GetWindowDesktopId(new WindowInteropHelper(wnd).Handle)
+                    );
+                    wnd.Close();
+                    wnd = null;
+                }
             }
+            catch (Exception)
+            { }
         }
 
         private void Timer_Elapsed(object sender, EventArgs e)
