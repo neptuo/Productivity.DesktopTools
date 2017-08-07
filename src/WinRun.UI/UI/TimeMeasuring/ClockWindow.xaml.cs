@@ -61,7 +61,6 @@ namespace WinRun.UI.TimeMeasuring
                 if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
                 {
                     wnd = new EmptyWindow();
-                    Win32.RemoveFromAeroPeek(new WindowInteropHelper(wnd).Handle);
 
                     wnd.Width = 10;
                     wnd.Height = 10;
@@ -81,8 +80,11 @@ namespace WinRun.UI.TimeMeasuring
             { }
             finally
             {
-                wnd.Close();
-                wnd = null;
+                if (wnd != null)
+                {
+                    wnd.Close();
+                    wnd = null;
+                }
             }
         }
 
