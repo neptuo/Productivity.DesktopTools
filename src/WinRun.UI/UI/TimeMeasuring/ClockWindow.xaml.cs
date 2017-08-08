@@ -35,14 +35,18 @@ namespace WinRun.UI.TimeMeasuring
         public ClockWindow()
         {
             InitializeComponent();
-            this.virtualDesktopManager = new VirtualDesktopManager();
+
+            virtualDesktopManager = new VirtualDesktopManager();
+
+            Settings.Default.IsClockOpen = true;
+            Settings.Default.Save();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
 
-            timer = new DispatcherTimer(TimeSpan.FromMilliseconds(500), DispatcherPriority.Normal, Timer_Elapsed, Dispatcher);
+            timer = new DispatcherTimer(TimeSpan.FromMilliseconds(500), DispatcherPriority.Normal, OnTimerElapsed, Dispatcher);
             timer.Start();
 
             Left = Settings.Default.ClockLeft;
@@ -88,7 +92,7 @@ namespace WinRun.UI.TimeMeasuring
             }
         }
 
-        private void Timer_Elapsed(object sender, EventArgs e)
+        private void OnTimerElapsed(object sender, EventArgs e)
         {
             UpdateDateTime();
             EnsureCurrentVirtualDesktop();
@@ -116,12 +120,15 @@ namespace WinRun.UI.TimeMeasuring
             }
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
                 Hide();
-                UpdateSettings();
+                UpdateSettings(false);
+
+                Settings.Default.IsClockOpen = false;
+                Settings.Default.Save();
             }
         }
 
@@ -132,22 +139,18 @@ namespace WinRun.UI.TimeMeasuring
             UpdateSettings();
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
         }
 
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            //Hide();
-            //UpdateSettings();
-        }
-
-        private void UpdateSettings()
+        private void UpdateSettings(bool save = true)
         {
             Settings.Default.ClockLeft = Left;
             Settings.Default.ClockTop = Top;
-            Settings.Default.Save();
+
+            if (save)
+                Settings.Default.Save();
         }
     }
 }

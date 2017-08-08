@@ -26,7 +26,8 @@ namespace WinRun.UI
         {
             window = new MainWindow();
             window.Show();
-            Application.Current.MainWindow = window;
+
+            Current.MainWindow = window;
         }
 
         private void CreateTrayIcon()

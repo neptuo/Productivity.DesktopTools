@@ -1,8 +1,8 @@
 ﻿<Window x:Class="WinRun.UI.TimeMeasuring.ClockWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ClockWindow" WindowStyle="None" ResizeMode="NoResize" Background="Black" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True"
-        PreviewKeyDown="Window_PreviewKeyDown" MouseLeftButtonDown="Window_MouseLeftButtonDown" Deactivated="Window_Deactivated">
+        Title="Clock" WindowStyle="None" ResizeMode="NoResize" Background="Black" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True"
+        PreviewKeyDown="OnPreviewKeyDown" MouseLeftButtonDown="OnMouseLeftButtonDown">
     <Grid>
         <Label x:Name="lblClock"  Content="18:32:40" Foreground="White" FontSize="80" Padding="30,10,30,20" />
     </Grid>

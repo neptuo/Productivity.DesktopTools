@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WinRun.Hotkeys;
+using WinRun.Properties;
 
 namespace WinRun.UI.TimeMeasuring
 {
@@ -21,6 +22,9 @@ namespace WinRun.UI.TimeMeasuring
             Size = ClockSize.Large;
             LargeHotkey = new Hotkey(ModifierKeys.Windows, Key.F6);
             MediumHotkey = new Hotkey(ModifierKeys.Windows | ModifierKeys.Shift, Key.F6);
+
+            if (Settings.Default.IsClockOpen)
+                Handle(LargeHotkey);
         }
 
         public virtual void Handle(Hotkey hotkey)
