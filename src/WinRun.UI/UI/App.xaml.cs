@@ -16,6 +16,8 @@ namespace WinRun.UI
         private MainWindow window;
         private NotifyIcon trayIcon;
 
+        private HelpWindow help;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             CreateMainWindow();
@@ -38,8 +40,29 @@ namespace WinRun.UI
             trayIcon.Visible = true;
 
             trayIcon.ContextMenu = new ContextMenu();
+            trayIcon.ContextMenu.MenuItems.Add("Help", OpenHelp);
             trayIcon.ContextMenu.MenuItems.Add("Clock", (sender, e) => window.ClockHandler.Handle(window.ClockHandler.LargeHotkey));
             trayIcon.ContextMenu.MenuItems.Add("Exit", (sender, e) => Shutdown());
+        }
+
+        private void OpenHelp(object sender, EventArgs e)
+        {
+            if (help == null)
+            {
+                help = new HelpWindow();
+                help.Closed += OnHelpClosed;
+                help.Show();
+            }
+            else
+            {
+                help.Activate();
+            }
+        }
+
+        private void OnHelpClosed(object sender, EventArgs e)
+        {
+            help.Closed -= OnHelpClosed;
+            help = null;
         }
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

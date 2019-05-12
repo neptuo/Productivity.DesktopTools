@@ -95,6 +95,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -129,6 +130,9 @@
     <Compile Include="Stickers\Window10OffsetDecorator.cs" />
     <Compile Include="TopMostWindows\PinTopMostHotkeyHandler.cs" />
     <Compile Include="TopMostWindows\Win32.cs" />
+    <Compile Include="UI\HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\LockWorkStationHandler.cs" />
     <Compile Include="Stickers\DesktopStickPointProvider.cs" />
     <Compile Include="Stickers\IStickPointProvider.cs" />
@@ -160,6 +164,10 @@
     <Page Include="Stickers\UI\StickVisualizationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\HelpWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\TimeMeasuring\ClockWindow.xaml">
       <SubType>Designer</SubType>
