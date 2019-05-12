@@ -130,6 +130,10 @@ namespace WinRun.UI.TimeMeasuring
                 Settings.Default.IsClockOpen = false;
                 Settings.Default.Save();
             }
+            else if (e.Key == Key.System && e.SystemKey == Key.F4)
+            {
+                e.Handled = true;
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
