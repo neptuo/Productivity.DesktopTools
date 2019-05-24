@@ -28,15 +28,12 @@ namespace WinRun.UI.TimeMeasuring
     /// </summary>
     public partial class ClockWindow : Window
     {
-        private readonly VirtualDesktopManager virtualDesktopManager;
         private DispatcherTimer timer;
         private IntPtr handle;
 
         public ClockWindow()
         {
             InitializeComponent();
-
-            virtualDesktopManager = new VirtualDesktopManager();
 
             Settings.Default.IsClockOpen = true;
             Settings.Default.Save();
@@ -55,47 +52,12 @@ namespace WinRun.UI.TimeMeasuring
 
             handle = new WindowInteropHelper(this).Handle;
             Win32.RemoveFromAeroPeek(handle);
-        }
-
-        private void EnsureCurrentVirtualDesktop()
-        {
-            EmptyWindow wnd = null;
-            try
-            {
-                if (!virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle))
-                {
-                    wnd = new EmptyWindow();
-
-                    wnd.Width = 10;
-                    wnd.Height = 10;
-                    wnd.Left = -100;
-                    wnd.Top = -100;
-                    wnd.ShowInTaskbar = false;
-
-                    wnd.Show();
-
-                    virtualDesktopManager.MoveWindowToDesktop(
-                        handle,
-                        virtualDesktopManager.GetWindowDesktopId(new WindowInteropHelper(wnd).Handle)
-                    );
-                }
-            }
-            catch (Exception)
-            { }
-            finally
-            {
-                if (wnd != null)
-                {
-                    wnd.Close();
-                    wnd = null;
-                }
-            }
+            TopMostWindows.Win32.SwitchToolWindowExStyle(handle);
         }
 
         private void OnTimerElapsed(object sender, EventArgs e)
         {
             UpdateDateTime();
-            EnsureCurrentVirtualDesktop();
         }
 
         public void UpdateDateTime()
