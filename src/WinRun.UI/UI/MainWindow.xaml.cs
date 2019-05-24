@@ -50,6 +50,7 @@ namespace WinRun.UI
             hotkeyService.Add(new NetworkConnectionsHandler());
             hotkeyService.Add(new LockWorkStationHandler(this));
             hotkeyService.Add(new PinTopMostHotkeyHandler());
+            hotkeyService.Add(new PinToAllDesktopsHotkeyHandler());
 
             SystemSuspendHandler suspendHandler = new SystemSuspendHandler();
             hotkeyService.Add(suspendHandler.SleepHotkey, suspendHandler.Handle);

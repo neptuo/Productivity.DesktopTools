@@ -25,6 +25,9 @@ namespace WinRun.TopMostWindows
         [DllImport("user32.dll", SetLastError = true)]
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint exstyle);
+
         const int GWL_EXSTYLE = -20;
 
         // Window Styles 
@@ -80,9 +83,17 @@ namespace WinRun.TopMostWindows
         const UInt32 WS_EX_COMPOSITED = 0x02000000;
         const UInt32 WS_EX_NOACTIVATE = 0x08000000;
 
-        public static bool IsWindowTopMost(IntPtr Handle)
+        public static bool IsWindowTopMost(IntPtr Handle) => (GetWindowLong(Handle, GWL_EXSTYLE) & WS_EX_TOPMOST) != 0;
+
+        public static void SwitchToolWindowExStyle(IntPtr handle)
         {
-            return (GetWindowLong(Handle, GWL_EXSTYLE) & WS_EX_TOPMOST) != 0;
+            uint exstyle = (uint)GetWindowLong(handle, GWL_EXSTYLE);
+            if ((exstyle & WS_EX_TOOLWINDOW) == 0)
+                exstyle |= WS_EX_TOOLWINDOW;
+            else
+                exstyle &= ~WS_EX_TOOLWINDOW;
+
+            SetWindowLong(handle, GWL_EXSTYLE, exstyle);
         }
     }
 }

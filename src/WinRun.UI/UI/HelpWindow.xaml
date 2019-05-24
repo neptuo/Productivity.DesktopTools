@@ -53,5 +53,9 @@
             <TextBlock Text="Win+Alt+Z" FontWeight="Bold" />
             <TextBlock Text="Pin window as top most" HorizontalAlignment="Right" />
         </Grid>
+        <Grid>
+            <TextBlock Text="Win+Alt+X" FontWeight="Bold" />
+            <TextBlock Text="Pin window to all desktops" HorizontalAlignment="Right" />
+        </Grid>
     </StackPanel>
 </Window>

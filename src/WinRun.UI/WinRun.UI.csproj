@@ -128,6 +128,7 @@
       <DependentUpon>StickVisualizationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Stickers\Window10OffsetDecorator.cs" />
+    <Compile Include="TopMostWindows\PinToAllDesktopsHotkeyHandler.cs" />
     <Compile Include="TopMostWindows\PinTopMostHotkeyHandler.cs" />
     <Compile Include="TopMostWindows\Win32.cs" />
     <Compile Include="UI\HelpWindow.xaml.cs">
