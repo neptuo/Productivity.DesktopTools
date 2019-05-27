@@ -123,6 +123,8 @@
     <Compile Include="Hotkeys\WindowHotkeyCollection.cs" />
     <Compile Include="Hotkeys\_HotkeyCollectionExtensions.cs" />
     <Compile Include="IBackgroundService.cs" />
+    <Compile Include="ShellHooks\NewWindowListener.cs" />
+    <Compile Include="ShellHooks\Win32.cs" />
     <Compile Include="Stickers\IStickPointDecorator.cs" />
     <Compile Include="Stickers\UI\StickVisualizationWindow.xaml.cs">
       <DependentUpon>StickVisualizationWindow.xaml</DependentUpon>

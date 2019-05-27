@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WinRun.Hotkeys;
+using WinRun.ShellHooks;
 using WinRun.Stickers;
 using WinRun.TopMostWindows;
 using WinRun.UI.TimeMeasuring;
@@ -31,6 +32,7 @@ namespace WinRun.UI
     {
         private StickService stickService;
         private HotkeyService hotkeyService;
+        private NewWindowListener newWindowListener;
 
         public ClockHandler ClockHandler { get; private set; }
 
@@ -45,6 +47,8 @@ namespace WinRun.UI
 
             hotkeyService = new HotkeyService(this);
             hotkeyService.Install();
+
+            newWindowListener = new NewWindowListener(new WindowInteropHelper(this).EnsureHandle());
 
             hotkeyService.Add(new TurnMonitorOffHandler(this));
             hotkeyService.Add(new NetworkConnectionsHandler());
@@ -73,6 +77,7 @@ namespace WinRun.UI
 
             stickService.UnInstall();
             hotkeyService.UnInstall();
+            newWindowListener.Dispose();
         }
     }
 }
