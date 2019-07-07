@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using VirtualDesktops;
 using WinRun.Properties;
 
 namespace WinRun.UI.TimeMeasuring
@@ -30,6 +31,7 @@ namespace WinRun.UI.TimeMeasuring
     {
         private DispatcherTimer timer;
         private IntPtr handle;
+        private bool isActivated;
 
         public ClockWindow()
         {
@@ -52,7 +54,17 @@ namespace WinRun.UI.TimeMeasuring
 
             handle = new WindowInteropHelper(this).Handle;
             Win32.RemoveFromAeroPeek(handle);
-            TopMostWindows.Win32.SwitchToolWindowExStyle(handle);
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (!isActivated)
+            {
+                Desktop.PinWindow(handle);
+                isActivated = true;
+            }
         }
 
         private void OnTimerElapsed(object sender, EventArgs e)

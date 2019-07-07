@@ -81,6 +81,9 @@
   <PropertyGroup>
     <ApplicationIcon>TrayIcon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>WinRun.UI.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Neptuo, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Neptuo.5.0.1\lib\net45\Neptuo.dll</HintPath>
@@ -130,6 +133,7 @@
     <Compile Include="Stickers\Window10OffsetDecorator.cs" />
     <Compile Include="TopMostWindows\PinToAllDesktopsHotkeyHandler.cs" />
     <Compile Include="TopMostWindows\PinTopMostHotkeyHandler.cs" />
+    <Compile Include="TopMostWindows\Interop.VirtualDesktop.cs" />
     <Compile Include="TopMostWindows\Win32.cs" />
     <Compile Include="UI\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>

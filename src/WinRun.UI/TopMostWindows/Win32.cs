@@ -84,16 +84,5 @@ namespace WinRun.TopMostWindows
         const UInt32 WS_EX_NOACTIVATE = 0x08000000;
 
         public static bool IsWindowTopMost(IntPtr Handle) => (GetWindowLong(Handle, GWL_EXSTYLE) & WS_EX_TOPMOST) != 0;
-
-        public static void SwitchToolWindowExStyle(IntPtr handle)
-        {
-            uint exstyle = (uint)GetWindowLong(handle, GWL_EXSTYLE);
-            if ((exstyle & WS_EX_TOOLWINDOW) == 0)
-                exstyle |= WS_EX_TOOLWINDOW;
-            else
-                exstyle &= ~WS_EX_TOOLWINDOW;
-
-            SetWindowLong(handle, GWL_EXSTYLE, exstyle);
-        }
     }
 }

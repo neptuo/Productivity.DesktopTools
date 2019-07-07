@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using VirtualDesktops;
 using WinRun.Hotkeys;
 
 namespace WinRun.TopMostWindows
@@ -16,7 +17,10 @@ namespace WinRun.TopMostWindows
         public void Handle(Hotkey hotkey)
         {
             IntPtr handle = Win32.GetForegroundWindow();
-            Win32.SwitchToolWindowExStyle(handle);
+            if (Desktop.IsWindowPinned(handle))
+                Desktop.UnpinWindow(handle);
+            else
+                Desktop.PinWindow(handle);
         }
     }
 }
