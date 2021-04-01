@@ -1,0 +1,11 @@
+﻿<Window x:Class="WinRun.TopMostWindows.UI.PinWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="Pin" WindowStyle="None" ResizeMode="NoResize" Background="Transparent" SizeToContent="WidthAndHeight" ShowInTaskbar="False" Topmost="True" AllowsTransparency="True">
+    <Border Background="Black" CornerRadius="8" Width="96" Height="96">
+        <Grid Margin="16,8,24,0">
+            <fa:ImageAwesome x:Name="Icon" Icon="ThumbTack" Foreground="White" Rotation="45" Width="48" Height="48" />
+        </Grid>
+    </Border>
+</Window>

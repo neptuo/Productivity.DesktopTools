@@ -11,7 +11,7 @@ namespace WinRun.UI
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, INotificationService
     {
         private MainWindow window;
         private NotifyIcon trayIcon;
@@ -26,7 +26,7 @@ namespace WinRun.UI
 
         private void CreateMainWindow()
         {
-            window = new MainWindow();
+            window = new MainWindow(this);
             window.Show();
 
             Current.MainWindow = window;
@@ -70,11 +70,14 @@ namespace WinRun.UI
             e.Handled = true;
 
             if (trayIcon != null)
-            {
-                trayIcon.BalloonTipTitle = "Exception occured";
-                trayIcon.BalloonTipText = e.ToString();
-                trayIcon.ShowBalloonTip(5 * 1000);
-            }
+                ShowNotification("Exception occured", e.ToString(), 5 * 1000);
+        }
+
+        public void ShowNotification(string title, string text, int durationMilliSeconds)
+        {
+            trayIcon.BalloonTipTitle = title;
+            trayIcon.BalloonTipText = text;
+            trayIcon.ShowBalloonTip(durationMilliSeconds);
         }
 
         protected override void OnExit(ExitEventArgs e)

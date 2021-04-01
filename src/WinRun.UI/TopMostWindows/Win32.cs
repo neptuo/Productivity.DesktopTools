@@ -84,5 +84,18 @@ namespace WinRun.TopMostWindows
         const UInt32 WS_EX_NOACTIVATE = 0x08000000;
 
         public static bool IsWindowTopMost(IntPtr Handle) => (GetWindowLong(Handle, GWL_EXSTYLE) & WS_EX_TOPMOST) != 0;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;        // x position of upper-left corner
+            public int Top;         // y position of upper-left corner
+            public int Right;       // x position of lower-right corner
+            public int Bottom;      // y position of lower-right corner
+        }
     }
 }

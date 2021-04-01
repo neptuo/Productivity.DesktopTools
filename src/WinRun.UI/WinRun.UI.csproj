@@ -85,6 +85,9 @@
     <StartupObject>WinRun.UI.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="Neptuo, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Neptuo.5.0.1\lib\net45\Neptuo.dll</HintPath>
       <Private>True</Private>
@@ -126,6 +129,7 @@
     <Compile Include="Hotkeys\WindowHotkeyCollection.cs" />
     <Compile Include="Hotkeys\_HotkeyCollectionExtensions.cs" />
     <Compile Include="IBackgroundService.cs" />
+    <Compile Include="INotificationService.cs" />
     <Compile Include="Stickers\IStickPointDecorator.cs" />
     <Compile Include="Stickers\UI\StickVisualizationWindow.xaml.cs">
       <DependentUpon>StickVisualizationWindow.xaml</DependentUpon>
@@ -134,6 +138,9 @@
     <Compile Include="TopMostWindows\PinToAllDesktopsHotkeyHandler.cs" />
     <Compile Include="TopMostWindows\PinTopMostHotkeyHandler.cs" />
     <Compile Include="TopMostWindows\Interop.VirtualDesktop.cs" />
+    <Compile Include="TopMostWindows\UI\PinWindow.xaml.cs">
+      <DependentUpon>PinWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TopMostWindows\Win32.cs" />
     <Compile Include="UI\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
@@ -169,6 +176,10 @@
     <Page Include="Stickers\UI\StickVisualizationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TopMostWindows\UI\PinWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\HelpWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -255,6 +266,7 @@
   <ItemGroup>
     <Resource Include="TrayIcon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

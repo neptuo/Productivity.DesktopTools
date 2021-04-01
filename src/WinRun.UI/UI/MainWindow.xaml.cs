@@ -1,4 +1,5 @@
-﻿using Neptuo.Windows.Threading;
+﻿using Neptuo;
+using Neptuo.Windows.Threading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,11 +32,15 @@ namespace WinRun.UI
     {
         private StickService stickService;
         private HotkeyService hotkeyService;
+        private readonly INotificationService notifications;
 
         public ClockHandler ClockHandler { get; private set; }
 
-        public MainWindow()
+        public MainWindow(INotificationService notifications)
         {
+            Ensure.NotNull(notifications, "notifications");
+            this.notifications = notifications;
+
             InitializeComponent();
         }
 
