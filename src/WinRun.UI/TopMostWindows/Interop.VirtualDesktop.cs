@@ -179,7 +179,7 @@ namespace VirtualDesktops
     internal interface IObjectArray
     {
         void GetCount(out int count);
-        void GetAt(int index, ref Guid iid, [MarshalAs(UnmanagedType.Interface)]out object obj);
+        void GetAt(int index, ref Guid iid, [MarshalAs(UnmanagedType.Interface)] out object obj);
     }
 
     [ComImport]
@@ -193,19 +193,86 @@ namespace VirtualDesktops
 
     internal static class DesktopManager
     {
+        private static readonly object serviceLock = new object();
+        private static IServiceProvider10 shell;
+        private static IVirtualDesktopManagerInternal virtualDesktopManagerInternal;
+        private static IVirtualDesktopManager virtualDesktopManager;
+        private static IApplicationViewCollection applicationViewCollection;
+        private static IVirtualDesktopPinnedApps virtualDesktopPinnedApps;
+
         static DesktopManager()
         {
-            var shell = (IServiceProvider10)Activator.CreateInstance(Type.GetTypeFromCLSID(Guids.CLSID_ImmersiveShell));
-            VirtualDesktopManagerInternal = (IVirtualDesktopManagerInternal)shell.QueryService(Guids.CLSID_VirtualDesktopManagerInternal, typeof(IVirtualDesktopManagerInternal).GUID);
-            VirtualDesktopManager = (IVirtualDesktopManager)Activator.CreateInstance(Type.GetTypeFromCLSID(Guids.CLSID_VirtualDesktopManager));
-            ApplicationViewCollection = (IApplicationViewCollection)shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID);
-            VirtualDesktopPinnedApps = (IVirtualDesktopPinnedApps)shell.QueryService(Guids.CLSID_VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID);
+            shell = (IServiceProvider10)Activator.CreateInstance(Type.GetTypeFromCLSID(Guids.CLSID_ImmersiveShell));
         }
 
-        internal static IVirtualDesktopManagerInternal VirtualDesktopManagerInternal;
-        internal static IVirtualDesktopManager VirtualDesktopManager;
-        internal static IApplicationViewCollection ApplicationViewCollection;
-        internal static IVirtualDesktopPinnedApps VirtualDesktopPinnedApps;
+        internal static IVirtualDesktopManagerInternal VirtualDesktopManagerInternal
+        {
+            get
+            {
+                if (virtualDesktopManagerInternal == null)
+                {
+                    lock (serviceLock)
+                    {
+                        if (virtualDesktopManagerInternal == null)
+                            virtualDesktopManagerInternal = (IVirtualDesktopManagerInternal)shell.QueryService(Guids.CLSID_VirtualDesktopManagerInternal, typeof(IVirtualDesktopManagerInternal).GUID);
+                    }
+                }
+
+                return virtualDesktopManagerInternal;
+            }
+        }
+
+
+        internal static IVirtualDesktopManager VirtualDesktopManager
+        {
+            get
+            {
+                if (virtualDesktopManager == null)
+                {
+                    lock (serviceLock)
+                    {
+                        if (virtualDesktopManager == null)
+                            virtualDesktopManager = (IVirtualDesktopManager)Activator.CreateInstance(Type.GetTypeFromCLSID(Guids.CLSID_VirtualDesktopManager));
+                    }
+                }
+
+                return virtualDesktopManager;
+            }
+        }
+
+        internal static IApplicationViewCollection ApplicationViewCollection
+        {
+            get
+            {
+                if (applicationViewCollection == null)
+                {
+                    lock (serviceLock)
+                    {
+                        if (applicationViewCollection == null)
+                            applicationViewCollection = (IApplicationViewCollection)shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID);
+                    }
+                }
+
+                return applicationViewCollection;
+            }
+        }
+
+        internal static IVirtualDesktopPinnedApps VirtualDesktopPinnedApps
+        {
+            get
+            {
+                if (virtualDesktopPinnedApps == null)
+                {
+                    lock (serviceLock)
+                    {
+                        if (virtualDesktopPinnedApps == null)
+                            virtualDesktopPinnedApps = (IVirtualDesktopPinnedApps)shell.QueryService(Guids.CLSID_VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID);
+                    }
+                }
+
+                return virtualDesktopPinnedApps;
+            }
+        }
 
         internal static IVirtualDesktop GetDesktop(int index)
         {   // get desktop with index
