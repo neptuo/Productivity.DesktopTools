@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WinRun.UserWindowSizes.UI.Commands;
+using WinRun.UserWindowSizes.UI.ViewModels.Commands;
 
 namespace WinRun.UserWindowSizes.UI.ViewModels
 {
-    public class SetSizeViewModel : ObservableObject
+    public class SetSizeViewModel : ObservableModel
     {
         private bool isCurrentMonitor;
         public bool IsCurrentMonitor
@@ -25,15 +27,15 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
             }
         }
 
-        private string title;
-        public string Title
+        private string name;
+        public string Name
         {
-            get { return title; }
+            get { return name; }
             set
             {
-                if (title != value)
+                if (name != value)
                 {
-                    title = value;
+                    name = value;
                     RaisePropertyChanged();
                 }
             }
@@ -95,44 +97,26 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
             }
         }
 
-        public ICommand ApplyCommand { get; private set; }
+        public IReadOnlyCollection<string> Names { get; }
 
-        public SetSizeViewModel(string title, IWindowManager manager)
+        public ICommand Apply { get; }
+        public SaveAsCommand SaveAs { get; }
+
+        public SetSizeViewModel(string title, IWindowManager manager, SizeRepository repository)
         {
-            Title = title;
+            Name = title;
+            Names = repository.GetNames();
             IsCurrentMonitor = true;
-            ApplyCommand = new ApplyCommandImpl(this, manager);
+            Apply = new ApplyCommand(this, manager);
+            SaveAs = new SaveAsCommand(this, repository);
         }
 
-        public interface IWindowManager
+        public SizeModel ToSize() => new SizeModel()
         {
-            void Update(int left, int top, int width, int height, bool isCurrentMonitor);
-        }
-
-        private class ApplyCommandImpl : ICommand
-        {
-            public bool CanExecute(object parameter)
-            {
-                return true;
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            private readonly SetSizeViewModel viewModel;
-            private readonly IWindowManager manager;
-
-            public ApplyCommandImpl(SetSizeViewModel viewModel, IWindowManager manager)
-            {
-                Ensure.NotNull(viewModel, "viewModel");
-                Ensure.NotNull(manager, "manager");
-                this.viewModel = viewModel;
-                this.manager = manager;
-            }
-
-            public void Execute(object parameter)
-            {
-                manager.Update(viewModel.left, viewModel.Top, viewModel.width, viewModel.Height, viewModel.IsCurrentMonitor);
-            }
-        }
+            Left = Left,
+            Top = Top,
+            Width = Width,
+            Height = Height
+        };
     }
 }

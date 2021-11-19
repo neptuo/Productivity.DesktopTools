@@ -17,6 +17,7 @@ namespace WinRun.UserWindowSizes
     public class SetSizeHotkeyHandler : IHotkeyHandler
     {
         private SetSizeWindow window;
+        private SizeRepository repository = new SizeRepository();
 
         public Hotkey Hotkey { get; private set; }
 
@@ -37,7 +38,7 @@ namespace WinRun.UserWindowSizes
             Win32.RECT activeWindow;
             if (Win32.GetWindowRect(activeWindowHandle, out activeWindow))
             {
-                SetSizeViewModel viewModel = new SetSizeViewModel("Wnd", new WindowManager(activeWindowHandle));
+                SetSizeViewModel viewModel = new SetSizeViewModel("Wnd", new WindowManager(activeWindowHandle), repository);
                 viewModel.Left = activeWindow.Left;
                 viewModel.Top = activeWindow.Top;
                 viewModel.Width = activeWindow.Right - activeWindow.Left;
@@ -49,7 +50,7 @@ namespace WinRun.UserWindowSizes
             }
         }
 
-        private class WindowManager : SetSizeViewModel.IWindowManager
+        private class WindowManager : IWindowManager
         {
             private readonly IntPtr handle;
 

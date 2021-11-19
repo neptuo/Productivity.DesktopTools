@@ -1,10 +1,20 @@
 ﻿<Window x:Class="WinRun.UserWindowSizes.UI.SetSizeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SetSizeWindow" Height="300" Width="300">
+        Title="Set Size" Height="300" Width="300">
     <Window.Resources>
         <Style TargetType="StackPanel">
             <Setter Property="Margin" Value="10, 0, 10, 10" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0,2" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="4,2" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="4,2" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -18,9 +28,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Content="{Binding Title}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" />
         <CheckBox Content="Related to the current monitor" IsChecked="{Binding IsCurrentMonitor}" Margin="10" Grid.Row="1" Grid.ColumnSpan="2" />
 
         <StackPanel Grid.Row="2" Grid.Column="0">
@@ -40,8 +50,16 @@
             <TextBox Text="{Binding Height}" />
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-            <Button Content="Set position and size" Command="{Binding ApplyCommand}" />
+        <StackPanel HorizontalAlignment="Stretch" Grid.Row="4" Grid.Column="1">
+            <Button Content="Set position and size" Command="{Binding Apply}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="5" Grid.Column="0">
+            <Label Content="Name" />
+            <TextBox Text="{Binding Name}" />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="5" Grid.Column="1">
+            <Button Content="Save as" Command="{Binding SaveAs}" />
         </StackPanel>
     </Grid>
 </Window>
