@@ -1,5 +1,6 @@
 ﻿using Neptuo;
 using Neptuo.Observables;
+using Neptuo.Observables.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,6 +85,8 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
         }
 
         private int height;
+        private readonly SizeRepository repository;
+
         public int Height
         {
             get { return height; }
@@ -97,18 +100,29 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
             }
         }
 
-        public IReadOnlyCollection<string> Names { get; }
+        public ObservableCollection<string> Names { get; }
 
         public ICommand Apply { get; }
         public SaveAsCommand SaveAs { get; }
+        public LoadFromCommand LoadFrom { get; }
 
         public SetSizeViewModel(string title, IWindowManager manager, SizeRepository repository)
         {
+            this.repository = repository;
+
             Name = title;
-            Names = repository.GetNames();
-            IsCurrentMonitor = true;
+            Names = new ObservableCollection<string>();
             Apply = new ApplyCommand(this, manager);
             SaveAs = new SaveAsCommand(this, repository);
+            LoadFrom = new LoadFromCommand(this, repository);
+
+            ReloadNames();
+        }
+
+        public void ReloadNames()
+        {
+            Names.Clear();
+            Names.AddRange(repository.GetNames().OrderBy(n => n));
         }
 
         public SizeModel ToSize() => new SizeModel()

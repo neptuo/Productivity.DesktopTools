@@ -30,5 +30,12 @@ namespace WinRun.UserWindowSizes.UI
         {
             InitializeComponent();
         }
+
+        private void cobNames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string name = (string)cobNames.SelectedItem;
+            if (ViewModel.LoadFrom.CanExecute(name))
+                ViewModel.LoadFrom.Execute(name);
+        }
     }
 }

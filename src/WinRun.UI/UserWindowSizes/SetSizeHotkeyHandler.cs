@@ -38,7 +38,10 @@ namespace WinRun.UserWindowSizes
             Win32.RECT activeWindow;
             if (Win32.GetWindowRect(activeWindowHandle, out activeWindow))
             {
-                SetSizeViewModel viewModel = new SetSizeViewModel("Wnd", new WindowManager(activeWindowHandle), repository);
+                var title = new StringBuilder(1024);
+                Win32.GetWindowText(activeWindowHandle, title, title.Capacity);
+
+                SetSizeViewModel viewModel = new SetSizeViewModel(title.ToString(), new WindowManager(activeWindowHandle), repository);
                 viewModel.Left = activeWindow.Left;
                 viewModel.Top = activeWindow.Top;
                 viewModel.Width = activeWindow.Right - activeWindow.Left;

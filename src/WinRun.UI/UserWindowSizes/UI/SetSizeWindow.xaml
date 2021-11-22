@@ -31,6 +31,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <ComboBox x:Name="cobNames" ItemsSource="{Binding Names}" SelectionChanged="cobNames_SelectionChanged" Margin="10" Grid.Row="0" Grid.ColumnSpan="2" />
+        
         <CheckBox Content="Related to the current monitor" IsChecked="{Binding IsCurrentMonitor}" Margin="10" Grid.Row="1" Grid.ColumnSpan="2" />
 
         <StackPanel Grid.Row="2" Grid.Column="0">

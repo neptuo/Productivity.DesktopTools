@@ -54,5 +54,8 @@ namespace WinRun.UserWindowSizes
 
         [DllImport("user32.dll")]
         public static extern int MonitorFromWindow(IntPtr hwnd, int dwFlags);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
     }
 }

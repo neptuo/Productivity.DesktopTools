@@ -176,6 +176,7 @@
       <DependentUpon>SetSizeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserWindowSizes\UI\ViewModels\Commands\ApplyCommand.cs" />
+    <Compile Include="UserWindowSizes\UI\ViewModels\Commands\LoadFromCommand.cs" />
     <Compile Include="UserWindowSizes\UI\ViewModels\IWindowManager.cs" />
     <Compile Include="UserWindowSizes\UI\ViewModels\SetSizeViewModel.cs" />
     <Compile Include="UserWindowSizes\Win32.cs" />

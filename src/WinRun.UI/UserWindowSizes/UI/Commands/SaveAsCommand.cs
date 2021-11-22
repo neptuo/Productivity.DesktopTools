@@ -26,6 +26,7 @@ namespace WinRun.UserWindowSizes.UI.Commands
         public override void Execute()
         {
             repository.Set(viewModel.Name, viewModel.ToSize());
+            viewModel.ReloadNames();
         }
 
         public override bool CanExecute() 
