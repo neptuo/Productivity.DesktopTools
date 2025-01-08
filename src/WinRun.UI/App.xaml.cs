@@ -39,10 +39,10 @@ namespace WinRun.UI
             trayIcon.Text = "WinRun";
             trayIcon.Visible = true;
 
-            trayIcon.ContextMenu = new ContextMenu();
-            trayIcon.ContextMenu.MenuItems.Add("Help", OpenHelp);
-            trayIcon.ContextMenu.MenuItems.Add("Clock", (sender, e) => window.ClockHandler.Handle(window.ClockHandler.LargeHotkey));
-            trayIcon.ContextMenu.MenuItems.Add("Exit", (sender, e) => Shutdown());
+            trayIcon.ContextMenuStrip = new ContextMenuStrip();
+            trayIcon.ContextMenuStrip.Items.Add("Help", null, OpenHelp);
+            trayIcon.ContextMenuStrip.Items.Add("Clock", null, (sender, e) => window.ClockHandler.Handle(window.ClockHandler.LargeHotkey));
+            trayIcon.ContextMenuStrip.Items.Add("Exit", null, (sender, e) => Shutdown());
         }
 
         private void OpenHelp(object sender, EventArgs e)

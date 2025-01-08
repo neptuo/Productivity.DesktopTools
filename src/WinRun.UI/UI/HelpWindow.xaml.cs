@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Deployment.Application;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +20,16 @@ namespace WinRun.UI
         {
             InitializeComponent();
 
-            if (ApplicationDeployment.IsNetworkDeployed)
-                tblVersion.Text = "v" + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString(3);
-            else
-                tblVersion.Text = "DEBUG";
+            tblVersion.Text = GetVersion();
+        }
+
+        private string GetVersion()
+        {
+            var version = GetType().Assembly.GetName().Version;
+            if (version == null)
+                return "0.0.0";
+
+            return version.ToString(3);
         }
     }
 }
