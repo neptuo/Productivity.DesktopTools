@@ -1,13 +1,12 @@
-﻿using Neptuo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using WinRun.Hotkeys;
 using WinRun.UserWindowSizes.UI;
 using WinRun.UserWindowSizes.UI.ViewModels;
@@ -33,39 +32,41 @@ namespace WinRun.UserWindowSizes
                 window = null;
             }
 
-            IntPtr activeWindowHandle = Win32.GetForegroundWindow();
+            IntPtr activeWindowHwnd = Win32.GetForegroundWindow();
             Win32.RECT activeWindow;
-            if (Win32.GetWindowRect(activeWindowHandle, out activeWindow))
+            if (Win32.GetWindowRect(activeWindowHwnd, out activeWindow))
             {
-                SetSizeViewModel viewModel = new SetSizeViewModel("Wnd", new WindowManager(activeWindowHandle));
+                StringBuilder text = new StringBuilder(1024);
+                Win32.GetWindowText(activeWindowHwnd, text, text.Capacity);
+
+                window = new SetSizeWindow();
+
+                WindowManager windowManager = new(activeWindowHwnd, IntPtr.Zero);
+                SetSizeViewModel viewModel = new SetSizeViewModel(text.ToString(), windowManager);
                 viewModel.Left = activeWindow.Left;
                 viewModel.Top = activeWindow.Top;
                 viewModel.Width = activeWindow.Right - activeWindow.Left;
                 viewModel.Height = activeWindow.Bottom - activeWindow.Top;
 
-                window = new SetSizeWindow();
                 window.ViewModel = viewModel;
                 window.Show();
+
+                var setSizeWindowHandle = new WindowInteropHelper(window).Handle;
+                windowManager.ToFocusHwnd = setSizeWindowHandle;
             }
         }
 
-        private class WindowManager : SetSizeViewModel.IWindowManager
+        private class WindowManager(IntPtr toMoveHwnd, IntPtr toFocusHwnd) : SetSizeViewModel.IWindowManager
         {
-            private readonly IntPtr handle;
-
-            public WindowManager(IntPtr handle)
-            {
-                Ensure.NotNull(handle, "handle");
-                this.handle = handle;
-            }
+            public IntPtr ToFocusHwnd { get; set; } = toFocusHwnd;
 
             public void Update(int left, int top, int width, int height, bool isCurrentMonitor)
             {
                 Win32.RECT frame;
-                Win32.DwmGetWindowAttribute(handle, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out frame, Marshal.SizeOf(typeof(Win32.RECT)));
+                Win32.DwmGetWindowAttribute(toMoveHwnd, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out frame, Marshal.SizeOf(typeof(Win32.RECT)));
 
                 Win32.RECT position;
-                if (Win32.GetWindowRect(handle, out position))
+                if (Win32.GetWindowRect(toMoveHwnd, out position))
                 {
                     if (isCurrentMonitor)
                     {
@@ -77,7 +78,7 @@ namespace WinRun.UserWindowSizes
                         ));
 
                         Win32.SetWindowPos(
-                            handle,
+                            toMoveHwnd,
                             IntPtr.Zero,
                             left + screen.WorkingArea.Left + (position.Left - frame.Left),
                             top + screen.WorkingArea.Top + (position.Top - frame.Top),
@@ -89,7 +90,7 @@ namespace WinRun.UserWindowSizes
                     else
                     {
                         Win32.SetWindowPos(
-                            handle, 
+                            toMoveHwnd, 
                             IntPtr.Zero, 
                             left + (position.Left - frame.Left),
                             top + (position.Top - frame.Top), 
@@ -99,6 +100,9 @@ namespace WinRun.UserWindowSizes
                         );
                     }
                 }
+
+                if (ToFocusHwnd != IntPtr.Zero)
+                    Win32.SetForegroundWindow(ToFocusHwnd);
             }
         }
     }
