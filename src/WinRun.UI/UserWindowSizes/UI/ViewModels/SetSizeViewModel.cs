@@ -100,7 +100,6 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
         public SetSizeViewModel(string title, IWindowManager manager)
         {
             Title = title;
-            IsCurrentMonitor = true;
             ApplyCommand = new ApplyCommandImpl(this, manager);
         }
 
