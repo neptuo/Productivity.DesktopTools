@@ -39,8 +39,17 @@ namespace WinRun.TopMostWindows
 
             if (Win32.GetWindowRect(handle, out var rect))
             {
-                double top = rect.Top + ((rect.Bottom - rect.Top) / 2) - (window.ActualHeight / 2);
-                double left = rect.Left + ((rect.Right - rect.Left) / 2) - (window.ActualWidth / 2);
+                double windowHeight = window.ActualHeight;
+                if (windowHeight == 0)
+                    windowHeight = 96;
+
+                double windowWidth = window.ActualWidth;
+                if (windowWidth == 0)
+                    windowWidth = 96;
+
+                double top = rect.Top + ((rect.Bottom - rect.Top) / 2) - windowHeight / 2;
+                double left = rect.Left + ((rect.Right - rect.Left) / 2) - windowWidth / 2;
+
                 window.Top = top;
                 window.Left = left;
                 window.Show(isPinned);
