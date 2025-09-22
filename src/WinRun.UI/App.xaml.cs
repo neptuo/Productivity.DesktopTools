@@ -70,15 +70,11 @@ namespace WinRun.UI
             e.Handled = true;
 
             if (trayIcon != null)
-                ShowNotification("Exception occured", e.ToString(), 5 * 1000);
+                ShowNotification("Exception occured", e.Exception.ToString(), 5 * 1000);
         }
 
-        public void ShowNotification(string title, string text, int durationMilliSeconds)
-        {
-            trayIcon.BalloonTipTitle = title;
-            trayIcon.BalloonTipText = text;
-            trayIcon.ShowBalloonTip(durationMilliSeconds);
-        }
+        public void ShowNotification(string title, string text, int durationMilliSeconds) 
+            => trayIcon.ShowBalloonTip(durationMilliSeconds, title, text, ToolTipIcon.None);
 
         protected override void OnExit(ExitEventArgs e)
         {

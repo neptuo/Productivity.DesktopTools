@@ -47,7 +47,7 @@ namespace VirtualDesktops
     }
 
     [ComImport]
-    [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
+    //[InterfaceType(ComInterfaceType.InterfaceIsIInspectable)] - System.PlatformNotSupportedException: Marshalling as IInspectable is not supported in the .NET runtime.
     [Guid("372E1D3B-38D3-42E4-A15B-8AB2B178F513")]
     internal interface IApplicationView
     {
