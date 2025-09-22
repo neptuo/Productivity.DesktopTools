@@ -39,10 +39,10 @@ namespace WinRun.UI
             trayIcon.Text = "WinRun";
             trayIcon.Visible = true;
 
-            trayIcon.ContextMenu = new ContextMenu();
-            trayIcon.ContextMenu.MenuItems.Add("Help", OpenHelp);
-            trayIcon.ContextMenu.MenuItems.Add("Clock", (sender, e) => window.ClockHandler.Handle(window.ClockHandler.LargeHotkey));
-            trayIcon.ContextMenu.MenuItems.Add("Exit", (sender, e) => Shutdown());
+            trayIcon.ContextMenuStrip = new ContextMenuStrip();
+            trayIcon.ContextMenuStrip.Items.Add("Help", null, OpenHelp);
+            trayIcon.ContextMenuStrip.Items.Add("Clock", null, (sender, e) => window.ClockHandler.Handle(window.ClockHandler.LargeHotkey));
+            trayIcon.ContextMenuStrip.Items.Add("Exit", null, (sender, e) => Shutdown());
         }
 
         private void OpenHelp(object sender, EventArgs e)
@@ -70,15 +70,11 @@ namespace WinRun.UI
             e.Handled = true;
 
             if (trayIcon != null)
-                ShowNotification("Exception occured", e.ToString(), 5 * 1000);
+                ShowNotification("Exception occured", e.Exception.ToString(), 5 * 1000);
         }
 
-        public void ShowNotification(string title, string text, int durationMilliSeconds)
-        {
-            trayIcon.BalloonTipTitle = title;
-            trayIcon.BalloonTipText = text;
-            trayIcon.ShowBalloonTip(durationMilliSeconds);
-        }
+        public void ShowNotification(string title, string text, int durationMilliSeconds) 
+            => trayIcon.ShowBalloonTip(durationMilliSeconds, title, text, ToolTipIcon.None);
 
         protected override void OnExit(ExitEventArgs e)
         {

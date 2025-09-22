@@ -30,5 +30,12 @@ namespace WinRun.UserWindowSizes.UI
         {
             InitializeComponent();
         }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+
+            tbxLeft.Focus();
+        }
     }
 }

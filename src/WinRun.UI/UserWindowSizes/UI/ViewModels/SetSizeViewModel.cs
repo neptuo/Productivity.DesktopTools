@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace WinRun.UserWindowSizes.UI.ViewModels
 {
-    public class SetSizeViewModel : ObservableObject
+    public class SetSizeViewModel : ObservableModel
     {
         private bool isCurrentMonitor;
         public bool IsCurrentMonitor
@@ -100,7 +100,6 @@ namespace WinRun.UserWindowSizes.UI.ViewModels
         public SetSizeViewModel(string title, IWindowManager manager)
         {
             Title = title;
-            IsCurrentMonitor = true;
             ApplyCommand = new ApplyCommandImpl(this, manager);
         }
 

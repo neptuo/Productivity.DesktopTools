@@ -10,7 +10,13 @@ namespace WinRun.UserWindowSizes
     internal static class Win32
     {
         [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         [DllImport("dwmapi.dll")]
         public static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);

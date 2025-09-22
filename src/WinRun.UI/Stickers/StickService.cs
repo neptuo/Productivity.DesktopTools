@@ -42,7 +42,7 @@ namespace WinRun.Stickers
         private void OnTimer(object sender, ElapsedEventArgs e)
         {
             IntPtr current = Win32.GetForegroundWindow();
-            if (current != null && !windows.Contains(current))
+            if (current != IntPtr.Zero && !windows.Contains(current))
             {
                 windows.Add(current);
                 DispatcherHelper.Run(dispatcher, () =>
