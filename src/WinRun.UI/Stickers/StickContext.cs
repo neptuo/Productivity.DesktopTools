@@ -42,7 +42,7 @@ namespace WinRun.Stickers
             {
                 if (!IsModified || Math.Abs(NewPosition - OriginalPosition) > Math.Abs(newPosition - originalPosition))
                 {
-                    int newTargetPosition = Math.Max(newPosition - originalOffset, 0);
+                    int newTargetPosition = newPosition - originalOffset;
 
                     if(!IsResize || originalOffset == 0)
                         NewPosition = newTargetPosition;
