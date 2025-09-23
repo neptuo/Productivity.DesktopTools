@@ -8,20 +8,8 @@ using System.Windows.Forms;
 
 namespace WinRun.Stickers
 {
-    public class DesktopStickPointProvider : IStickPointProvider
+    public class DesktopStickPointProvider(int priority) : IStickPointProvider
     {
-        private readonly int priority;
-
-        public DesktopStickPointProvider(int priority)
-        {
-            this.priority = priority;
-
-            IntPtr desktopWindow = Win32.GetDesktopWindow();
-            Win32.RECT frame;
-            int size = Marshal.SizeOf(typeof(Win32.RECT));
-            int res = Win32.DwmGetWindowAttribute(desktopWindow, (int)Win32.DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out frame, size);
-        }
-
         public IEnumerable<StickPoint> ForTop()
         {
             return Screen.AllScreens.Select(s => new StickPoint(s.WorkingArea.Top, priority));
