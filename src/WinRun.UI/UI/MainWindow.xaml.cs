@@ -30,11 +30,11 @@ namespace WinRun.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private StickService stickService;
         private HotkeyService hotkeyService;
         private readonly INotificationService notifications;
 
         public ClockHandler ClockHandler { get; private set; }
+        public StickService StickService { get; private set; }
 
         public MainWindow(INotificationService notifications)
         {
@@ -66,8 +66,8 @@ namespace WinRun.UI
             hotkeyService.Add(ClockHandler.MediumHotkey, ClockHandler.Handle);
 
             // http://stackoverflow.com/questions/34139450/getwindowrect-returns-a-size-including-invisible-borders
-            stickService = new StickService(Dispatcher);
-            stickService.Install();
+            StickService = new StickService(Dispatcher);
+            StickService.Install();
 
             hotkeyService.Add(new SetSizeHotkeyHandler());
         }
@@ -76,7 +76,7 @@ namespace WinRun.UI
         {
             base.OnClosed(e);
 
-            stickService.UnInstall();
+            StickService.UnInstall();
             hotkeyService.UnInstall();
         }
     }

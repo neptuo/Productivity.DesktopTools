@@ -17,6 +17,7 @@ namespace WinRun.Stickers
         private readonly HashSet<IntPtr> windows = new HashSet<IntPtr>();
         private readonly List<WindowStickHook> hooks = new List<WindowStickHook>();
         private readonly IStickPointProvider pointProvider;
+        private bool isActive = true;
 
         public StickService(Dispatcher dispatcher)
         {
@@ -52,6 +53,15 @@ namespace WinRun.Stickers
                     hooks.Add(hook);
                 });
             }
+        }
+
+        public bool Toggle()
+        {
+            isActive = !isActive;
+            foreach (var hook in hooks)
+                hook.SetActive(isActive);
+
+            return isActive;
         }
 
         public void UnInstall()

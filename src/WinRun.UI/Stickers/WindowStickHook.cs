@@ -16,12 +16,14 @@ namespace WinRun.Stickers
         private readonly Win32.WinEventDelegate hookDelegate;
         private IntPtr hookPointer;
         private Position initialPosition;
+        private bool isActive;
 
         public WindowStickHook(IntPtr handle, IStickPointProvider pointProvider)
         {
             this.handle = handle;
             this.pointProvider = pointProvider;
             this.hookDelegate = new Win32.WinEventDelegate(WndProc2);
+            this.isActive = true;
         }
 
         public void Install()
@@ -39,6 +41,9 @@ namespace WinRun.Stickers
             //Log("SetWinEventHook on '{0}' returned '{1}'.", handle, hookPointer);
         }
 
+        public void SetActive(bool isActive)
+            => this.isActive = isActive;
+
         public void UnInstall()
         {
             Win32.UnhookWinEvent(hookPointer);
@@ -46,6 +51,9 @@ namespace WinRun.Stickers
 
         private void WndProc2(IntPtr hWinEventHook, uint eventType, IntPtr handle, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
+            if (!isActive)
+                return;
+
             if (this.handle != handle)
                 return;
 

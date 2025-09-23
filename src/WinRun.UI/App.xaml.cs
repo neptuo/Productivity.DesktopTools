@@ -42,6 +42,9 @@ namespace WinRun.UI
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
             trayIcon.ContextMenuStrip.Items.Add("Help", null, OpenHelp);
             trayIcon.ContextMenuStrip.Items.Add("Clock", null, (sender, e) => window.ClockHandler.Handle(window.ClockHandler.LargeHotkey));
+
+            ToolStripItem stickPause = null;
+            stickPause = trayIcon.ContextMenuStrip.Items.Add("Pause sticking", null, (sender, e) => { stickPause.Text = window.StickService.Toggle() ? "Pause sticking" : "Resume sticking"; });
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, (sender, e) => Shutdown());
         }
 
